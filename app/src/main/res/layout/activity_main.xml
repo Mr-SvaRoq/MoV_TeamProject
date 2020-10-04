@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="myName"
+            type="com.example.practice_demo.MyName" />
+    </data>
     <LinearLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/name_done_button"
@@ -36,7 +42,7 @@
             style="@style/NameStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name"
+            android:text="@={myName.name}"
             android:textAlignment="center" />
 
         <EditText
@@ -59,7 +65,8 @@
             android:id="@+id/nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:text="@={myName.nickname}"/>
 
         <ImageView
             android:id="@+id/star_image"
