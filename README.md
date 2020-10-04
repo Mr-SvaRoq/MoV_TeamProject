@@ -4,4 +4,4 @@ Stránka predmetu [Mobilné výpočty](http://android.mpage.sk/).
 
 Stránka kurzu [udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012) #23
 
-Kazda lesson je pod inou branchou
+Každá lesson je pod inou branchou
