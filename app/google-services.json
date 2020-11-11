@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1080067315830",
+    "firebase_url": "https://movtp-2e5cb.firebaseio.com",
+    "project_id": "movtp-2e5cb",
+    "storage_bucket": "movtp-2e5cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080067315830:android:2c71bf02d4848e0086a757",
+        "android_client_info": {
+          "package_name": "com.example.practice_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080067315830-rfg4kcdf7j6t6grv14r33dila5fn0m3p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1zg_ZKgiykOyx9StvN_aZM5s_eFeuExU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080067315830-rfg4kcdf7j6t6grv14r33dila5fn0m3p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

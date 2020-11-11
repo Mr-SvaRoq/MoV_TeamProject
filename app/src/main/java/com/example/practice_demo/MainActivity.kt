@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun rollDice() {
         val diceImage: ImageView = findViewById(R.id.id_diceImage)
-        val randomInt = Random.nextInt(6) + 1;
+        val randomInt = Random.nextInt(6) + 1
 
         val drawableResource = when (randomInt) {
             1 -> R.drawable.dice_1
