@@ -11,7 +11,7 @@ import com.google.gson.JsonParseException
  * Drzi status o prihlaseni pouzivatela, prezije to aj
  * zavretie appky
  *
- * TODO: ulozia sa sem vsetky data ktore vracia login
+ * TODO: encrypt tychto dat
  */
 class SaveSharedPreference {
     companion object {

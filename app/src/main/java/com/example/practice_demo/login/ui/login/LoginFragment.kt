@@ -1,9 +1,5 @@
 package com.example.practice_demo.login.ui.login
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,8 +11,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.practice_demo.R
+import com.example.practice_demo.helper.CustomCallbackFactory
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.login.data.model.UserLoginResponse
 
@@ -43,10 +44,9 @@ class LoginFragment : Fragment() {
         val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
         val navigateToSignUp = view.findViewById<Button>(R.id.signup)
 
-
-        navigateToSignUp.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
-        }
+        navigateToSignUp.setOnClickListener(CustomCallbackFactory.getButtonNavigateToId(
+            findNavController(), LoginFragmentDirections.actionLoginFragmentToSignupFragment()
+        ))
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
             Observer { loginFormState ->
@@ -81,13 +81,9 @@ class LoginFragment : Fragment() {
             })
 
         val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-                // ignore
-            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { /*ignore*/ }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // ignore
-            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { /*ignore*/ }
 
             override fun afterTextChanged(s: Editable) {
                 loginViewModel.loginDataChanged(

@@ -1,5 +1,6 @@
 package com.example.practice_demo.login.data
 
+import com.example.practice_demo.helper.PasswordHasher
 import com.example.practice_demo.login.data.model.UserLoginResponse
 
 /**
@@ -13,6 +14,8 @@ class LoginRepository(val dataSource: LoginDataSource) {
     var user: UserLoginResponse? = null
         private set
 
+
+    //todo: toto mozno padne vhod
     val isLoggedIn: Boolean
         get() = user != null
 
@@ -37,7 +40,11 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     suspend fun login(username: String, password: String): Result<UserLoginResponse> {
         // handle login
-        val result = dataSource.login(username, password)
+        // Musime poslat hash hesla
+        val result = dataSource.login(
+            username,
+            PasswordHasher.hash(password)
+        )
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)

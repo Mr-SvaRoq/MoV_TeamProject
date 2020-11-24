@@ -22,7 +22,7 @@ class LoginDataSource {
                     ServiceAction.LOGIN.action,
                     Api.API_KEY,
                     username,
-                    PasswordHasher.hash(password)
+                    password,
                 )
             ))
         } catch (e: Exception) {

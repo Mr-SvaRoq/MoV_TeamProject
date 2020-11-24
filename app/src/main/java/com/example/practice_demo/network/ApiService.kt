@@ -3,6 +3,7 @@ package com.example.practice_demo.network
 import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.signup.data.model.UserSignupRequest
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -47,6 +48,9 @@ interface ApiService {
     )
     @POST("service.php")
     suspend fun refreshTokenService(@Body body: RefreshTokenRequest): UserLoginResponse
+
+    @POST("service.php")
+    suspend fun signupService(@Body body: UserSignupRequest): UserLoginResponse
 }
 
 object Api {

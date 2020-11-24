@@ -25,7 +25,14 @@
         android:id="@+id/signupFragment"
         android:name="com.example.practice_demo.signup.ui.signup.SignupFragment"
         android:label="@string/sign_up"
-        tools:layout="@layout/fragment_signup" />
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_signupFragmentToLoginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_wallFragment"
+            app:destination="@id/wallFragment" />
+    </fragment>
     <fragment
         android:id="@+id/wallFragment"
         android:name="com.example.practice_demo.wall.ui.WallFragment"
