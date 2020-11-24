@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
-        if (SaveSharedPreference.hasUsername(this)) {
+        if (SaveSharedPreference.hasUser(this)) {
             //todo: Treba odstranit tu sipku na navrat v backstacku, teraz to preskakuje same na seba
             // Mame usera, nepotrebujeme login
             navController.navigate(LoginFragmentDirections.actionLoginFragmentToWallFragment())

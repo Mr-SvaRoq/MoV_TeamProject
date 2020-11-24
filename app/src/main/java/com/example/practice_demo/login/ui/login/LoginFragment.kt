@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.SaveSharedPreference
+import com.example.practice_demo.login.data.model.UserLoginResponse
 
 class LoginFragment : Fragment() {
 
@@ -72,7 +73,7 @@ class LoginFragment : Fragment() {
                     updateUiWithUser(it)
                     findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToWallFragment())
                     activity?.let {
-                        mainActivity -> SaveSharedPreference.setUsername(mainActivity, it.displayName)
+                        mainActivity -> SaveSharedPreference.setUser(mainActivity, it)
                     }
                 }
 
@@ -116,8 +117,8 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome) + model.displayName
+    private fun updateUiWithUser(model: UserLoginResponse) {
+        val welcome = getString(R.string.welcome) + model.username
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()

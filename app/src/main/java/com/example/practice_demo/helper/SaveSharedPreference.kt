@@ -3,6 +3,9 @@ package com.example.practice_demo.helper
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.google.gson.Gson
+import com.google.gson.JsonParseException
 
 /**
  * Drzi status o prihlaseni pouzivatela, prezije to aj
@@ -12,7 +15,8 @@ import androidx.preference.PreferenceManager
  */
 class SaveSharedPreference {
     companion object {
-        private const val PREF_USER_NAME = "username"
+        private const val PREF_USER_NAME = "userdata"
+        private val gson = Gson()
 
         private fun getSharedPreferences(ctx: Context): SharedPreferences? {
             return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -21,9 +25,10 @@ class SaveSharedPreference {
         /**
          * Nasetuj username -> login
          */
-        fun setUsername(ctx: Context, username: String) {
+        fun setUser(ctx: Context, user: UserLoginResponse) {
             getSharedPreferences(ctx)?.edit()?.let {editor ->
-                editor.putString(PREF_USER_NAME, username)
+                val userJson = gson.toJson(user)
+                editor.putString(PREF_USER_NAME, userJson)
                 editor.commit()
             }
         }
@@ -31,14 +36,25 @@ class SaveSharedPreference {
         /**
          * Ziskaj ulozene data
          */
-        fun getUsername(ctx: Context): String? =
-            getSharedPreferences(ctx)?.getString(PREF_USER_NAME, "")
+        fun getUser(ctx: Context): UserLoginResponse? {
+            var user: UserLoginResponse? = null
+
+            try {
+                getSharedPreferences(ctx)?.getString(PREF_USER_NAME, "").let {
+                    user = gson.fromJson(it, UserLoginResponse::class.java)
+                }
+
+                return user
+            } catch (e: JsonParseException) {
+                return null
+            }
+        }
 
         /**
          * Over, ci je user prihlaseny
          */
-        fun hasUsername(ctx: Context): Boolean =
-            getUsername(ctx)?.isEmpty() != true
+        fun hasUser(ctx: Context): Boolean =
+            getUser(ctx) != null
 
         /**
          * Vycisti data -> logout
