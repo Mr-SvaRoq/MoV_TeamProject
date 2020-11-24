@@ -1,6 +1,11 @@
 package com.example.practice_demo.login.data
 
-import com.example.practice_demo.login.data.model.LoggedInUser
+import android.app.Service
+import com.example.practice_demo.helper.PasswordHasher
+import com.example.practice_demo.login.data.model.UserLoginRequest
+import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.network.Api
+import com.example.practice_demo.network.ServiceAction
 import java.io.IOException
 
 /**
@@ -8,14 +13,22 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    suspend fun login(username: String, password: String): Result<UserLoginResponse> {
+        lateinit var result: Result<UserLoginResponse>
         try {
-            // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
-        } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
+            result = Result.Success(Api.retrofitService.loginService(
+                UserLoginRequest(
+                    ServiceAction.LOGIN.action,
+                    Api.API_KEY,
+                    username,
+                    PasswordHasher.hash(password)
+                )
+            ))
+        } catch (e: Exception) {
+            result =  Result.Error(IOException("Error logging in", e));
         }
+
+        return result
     }
 
     fun logout() {

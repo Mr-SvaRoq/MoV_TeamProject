@@ -14,10 +14,18 @@
             android:id="@+id/action_loginFragment_to_signupFragment"
             app:destination="@id/signupFragment"
             app:popUpTo="@id/loginFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_wallFragment"
+            app:destination="@id/wallFragment" />
     </fragment>
     <fragment
         android:id="@+id/signupFragment"
         android:name="com.example.practice_demo.signup.ui.signup.SignupFragment"
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" />
+    <fragment
+        android:id="@+id/wallFragment"
+        android:name="com.example.practice_demo.wall.ui.WallFragment"
+        android:label="fragment_wall"
+        tools:layout="@layout/fragment_wall" />
 </navigation>
