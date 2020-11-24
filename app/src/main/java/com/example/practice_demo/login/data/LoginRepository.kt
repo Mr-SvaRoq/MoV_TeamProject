@@ -22,9 +22,17 @@ class LoginRepository(val dataSource: LoginDataSource) {
         user = null
     }
 
-    fun logout() {
-        user = null
-        dataSource.logout()
+    //todo: Bude treba volat len pokial chceme odhlasit zo vsetkych zariadeni
+    // lebo toto vola request an zmenu tokenu
+    suspend fun logout(refreshToken: String): Result<UserLoginResponse> {
+        // handle login
+        val result = dataSource.logout(refreshToken)
+
+        if (result is Result.Success) {
+            setLoggedInUser(result.data)
+        }
+
+        return result
     }
 
     suspend fun login(username: String, password: String): Result<UserLoginResponse> {

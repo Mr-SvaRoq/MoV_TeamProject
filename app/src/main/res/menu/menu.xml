@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/view_profile" />
+<!--    Ikonka odtialto: https://material.io/resources/icons/?icon=exit_to_app&style=outline-->
+    <item
+        android:id="@+id/menu_logout"
+        app:showAsAction="always"
+        android:icon="@drawable/logout"
+        android:title="@string/logout" />
+</menu>

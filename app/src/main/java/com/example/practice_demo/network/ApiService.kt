@@ -1,5 +1,6 @@
 package com.example.practice_demo.network
 
+import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.squareup.moshi.Moshi
@@ -9,7 +10,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 private const val BASE_URL = "http://api.mcomputing.eu/mobv/service.php/"
-private const val API_KEY = "blabla"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create())
@@ -32,7 +32,6 @@ enum class ServiceAction(val action: String) {
     DELETE_POST("deletePost"),
 }
 
-
 interface ApiService {
 
     @Headers(
@@ -42,6 +41,12 @@ interface ApiService {
     @POST("service.php")
     suspend fun loginService(@Body body: UserLoginRequest): UserLoginResponse
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("service.php")
+    suspend fun refreshTokenService(@Body body: RefreshTokenRequest): UserLoginResponse
 }
 
 object Api {

@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.practice_demo.R
+import com.example.practice_demo.helper.SaveSharedPreference
 
 class LoginFragment : Fragment() {
 
@@ -69,7 +70,10 @@ class LoginFragment : Fragment() {
                 }
                 loginResult.success?.let {
                     updateUiWithUser(it)
-                    findNavController().navigate(R.id.action_loginFragment_to_wallFragment)
+                    findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToWallFragment())
+                    activity?.let {
+                        mainActivity -> SaveSharedPreference.setUsername(mainActivity, it.displayName)
+                    }
                 }
 
 

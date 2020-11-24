@@ -1,11 +1,13 @@
 package com.example.practice_demo.wall.ui
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.example.practice_demo.R
+import com.example.practice_demo.helper.SaveSharedPreference
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +36,33 @@ class WallFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Options menu
+        setHasOptionsMenu(true)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_wall, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        handleOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun handleOptionsItemSelected(item: MenuItem) {
+        when(item.itemId) {
+            R.id.menu_logout -> {
+                // Vycisti saved preference
+                activity?.let { SaveSharedPreference.clearUsername(it) }
+                // Presmeruj na login
+                findNavController().navigate(WallFragmentDirections.actionWallFragmentToLoginFragment())
+            }
+        }
     }
 
     companion object {

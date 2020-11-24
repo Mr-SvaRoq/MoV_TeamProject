@@ -2,6 +2,7 @@ package com.example.practice_demo.login.data
 
 import android.app.Service
 import com.example.practice_demo.helper.PasswordHasher
+import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.network.Api
@@ -25,13 +26,27 @@ class LoginDataSource {
                 )
             ))
         } catch (e: Exception) {
-            result =  Result.Error(IOException("Error logging in", e));
+            result =  Result.Error(IOException("Error logging in", e))
         }
 
         return result
     }
 
-    fun logout() {
-        // TODO: revoke authentication
+    suspend fun logout(refreshToken: String): Result<UserLoginResponse> {
+        lateinit var result: Result<UserLoginResponse>
+
+        try {
+            result = Result.Success(Api.retrofitService.refreshTokenService(
+                RefreshTokenRequest(
+                    ServiceAction.REFRESH_TOKEN.action,
+                    Api.API_KEY,
+                    refreshToken,
+                )
+            ))
+        } catch (e: Exception) {
+            result =  Result.Error(IOException("Token refreshing failed", e))
+        }
+
+        return result
     }
 }
