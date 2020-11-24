@@ -42,6 +42,10 @@ android {
             manifestPlaceholders = [usesCleartextTraffic:"true"]
         }
     }
+
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 dependencies {
