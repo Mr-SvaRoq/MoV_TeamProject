@@ -3,11 +3,10 @@ package com.example.practice_demo.wall.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.SaveSharedPreference
+import com.example.practice_demo.profile.ui.ProfileFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +60,10 @@ class WallFragment : Fragment() {
                 activity?.let { SaveSharedPreference.clearUsername(it) }
                 // Presmeruj na login
                 findNavController().navigate(WallFragmentDirections.actionWallFragmentToLoginFragment())
+            }
+
+            R.id.menu_viewProfile -> {
+                findNavController().navigate(WallFragmentDirections.actionWallFragmentToProfileFragment())
             }
         }
     }
