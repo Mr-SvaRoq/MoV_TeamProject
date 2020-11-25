@@ -2,34 +2,16 @@ package com.example.practice_demo.wall.ui
 
 import android.os.Bundle
 import android.view.*
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.practice_demo.R
+import com.example.practice_demo.databinding.FragmentWallBinding
 import com.example.practice_demo.helper.SaveSharedPreference
-import com.example.practice_demo.profile.ui.ProfileFragment
+import com.example.practice_demo.wall.data.model.PostItem
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [WallFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WallFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentWallBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +20,19 @@ class WallFragment : Fragment() {
         // Options menu
         setHasOptionsMenu(true)
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_wall, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wall, container, false)
+
+        val adapter = PostAdapter()
+
+        binding.postList.adapter = adapter
+
+        adapter.data = getDummyShitData()
+
+        // Specify the current activity as the lifecycle owner of the binding.
+        // This is necessary so that the binding can observe LiveData updates.
+        binding.lifecycleOwner = this
+
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,23 +61,29 @@ class WallFragment : Fragment() {
         }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WallFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WallFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun getDummyShitData(): List<PostItem> {
+        return listOf(
+            PostItem(
+                1,
+                "2020-04-05 02:12:33",
+                "video23.mp4",
+                "Dalai lama",
+                ""
+            ),
+            PostItem(
+                2,
+                "2020-04-01 13:14:33",
+                "video.mp4",
+                "Vladimir Putin",
+                ""
+            ),
+            PostItem(
+                3,
+                "2020-01-01 12:12:33",
+                "video.mp4",
+                "Vladimir Putin",
+                ""
+            )
+        )
     }
 }
