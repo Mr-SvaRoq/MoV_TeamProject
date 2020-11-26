@@ -3,6 +3,8 @@ package com.example.practice_demo.network
 import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.profile.data.model.ChangePictureRequest
+import com.example.practice_demo.profile.data.model.ChangePictureResponse
 import com.example.practice_demo.signup.data.model.UserSignupRequest
 import com.example.practice_demo.wall.data.model.GetPostsRequest
 import com.example.practice_demo.wall.data.model.PostItem
@@ -56,6 +58,9 @@ interface ApiService {
 
     @POST("service.php")
     suspend fun getPostsService(@Body body: GetPostsRequest): List<PostItem>
+
+    @POST("service.php")
+    suspend fun changePictureService(@Body body: ChangePictureRequest): ChangePictureResponse
 }
 
 object Api {

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="profile" type="com.example.practice_demo.profile.model.UserProfile" />
+        <variable name="profile" type="com.example.practice_demo.profile.data.model.UserProfile" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

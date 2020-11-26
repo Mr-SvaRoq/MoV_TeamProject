@@ -1,41 +1,28 @@
 package com.example.practice_demo.profile.ui
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.Manifest
+import android.R.attr
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
 import com.example.practice_demo.helper.SaveSharedPreference
-import com.example.practice_demo.profile.model.UserProfile
+import com.example.practice_demo.profile.data.model.UserProfile
+import de.hdodenhof.circleimageview.CircleImageView
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 private lateinit var binding: FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private fun getSharedPreferences(ctx: Context): SharedPreferences? {
-        return PreferenceManager.getDefaultSharedPreferences(ctx)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var profileImg: CircleImageView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,8 +30,8 @@ class ProfileFragment : Fragment() {
 
         // Options menu
         setHasOptionsMenu(true)
-        val user = activity?.let {
-                mainActivity -> SaveSharedPreference.getUser(mainActivity)
+        val user = activity?.let { mainActivity ->
+            SaveSharedPreference.getUser(mainActivity)
         }
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
@@ -56,9 +43,83 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        profileImg = view.findViewById(R.id.profile_image)
+
+        profileImg.setOnClickListener {
+            if (askForPermissions()) {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                startActivityForResult(intent, 1)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater.inflate(R.menu.menu, menu)
+    }
+
+    private fun isPermissionsAllowed(): Boolean {
+        return context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        } == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun askForPermissions(): Boolean {
+        if (!isPermissionsAllowed()) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    context as Activity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                showPermissionDeniedDialog()
+            } else {
+                ActivityCompat.requestPermissions(
+                    context as Activity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    1
+                )
+            }
+            return false
+        }
+        return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 1){
+            profileImg.setImageURI(data?.data) // handle chosen image
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            1 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    val intent = Intent(Intent.ACTION_PICK)
+                    intent.type = "image/*"
+                    startActivityForResult(intent, 1)
+                } else {
+                    askForPermissions()
+                }
+                return
+            }
+        }
+    }
+
+    private fun showPermissionDeniedDialog() {
+        context?.let {
+            AlertDialog.Builder(it)
+                .setTitle("Permission Denied")
+        }
     }
 }
