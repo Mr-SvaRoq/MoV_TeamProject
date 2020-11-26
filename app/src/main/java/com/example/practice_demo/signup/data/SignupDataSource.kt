@@ -1,5 +1,5 @@
 package com.example.practice_demo.signup.data
-import com.example.practice_demo.login.data.Result
+import com.example.practice_demo.helper.Result
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.network.Api
 import com.example.practice_demo.network.ServiceAction

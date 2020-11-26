@@ -3,10 +3,9 @@ package com.example.practice_demo.login.ui.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.lifecycle.viewModelScope
 import com.example.practice_demo.login.data.LoginRepository
-import com.example.practice_demo.login.data.Result
+import com.example.practice_demo.helper.Result
 
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.FieldValidator

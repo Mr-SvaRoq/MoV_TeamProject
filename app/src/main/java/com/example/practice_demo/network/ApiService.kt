@@ -4,6 +4,8 @@ import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.signup.data.model.UserSignupRequest
+import com.example.practice_demo.wall.data.model.GetPostsRequest
+import com.example.practice_demo.wall.data.model.PostItem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -51,6 +53,9 @@ interface ApiService {
 
     @POST("service.php")
     suspend fun signupService(@Body body: UserSignupRequest): UserLoginResponse
+
+    @POST("service.php")
+    suspend fun getPostsService(@Body body: GetPostsRequest): List<PostItem>
 }
 
 object Api {

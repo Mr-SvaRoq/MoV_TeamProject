@@ -8,7 +8,7 @@ import com.example.practice_demo.R
 import com.example.practice_demo.helper.FieldValidator
 import com.example.practice_demo.signup.data.SignupRepository
 import kotlinx.coroutines.launch
-import com.example.practice_demo.login.data.Result
+import com.example.practice_demo.helper.Result
 
 class SignupViewModel(private val signupRepository: SignupRepository): ViewModel() {
 
