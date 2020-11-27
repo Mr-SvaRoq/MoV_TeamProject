@@ -19,6 +19,7 @@ class WallViewModel (
     val postsList: LiveData<List<PostItem>> = _postsList
 
     // Livedata na status po ziskani postov (moze sa opakovane volat pri refreshnuti)
+    // todo: toto bude handlovat observer (fail / success)
     private val _getPostsResult = MutableLiveData<Boolean>()
     val getPostsResult: LiveData<Boolean> = _getPostsResult
 

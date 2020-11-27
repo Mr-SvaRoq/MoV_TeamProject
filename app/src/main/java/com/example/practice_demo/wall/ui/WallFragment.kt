@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
+import com.example.practice_demo.helper.PlayerManager
 import com.example.practice_demo.helper.SaveSharedPreference
+import com.example.practice_demo.wall.data.model.PostItem
 import java.io.IOException
 
 class WallFragment : Fragment() {
@@ -24,25 +26,17 @@ class WallFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Nasetuj viewModel
-        activity?.let {activity ->
+        activity?.let { activity ->
             val user = SaveSharedPreference.getUser(activity)
                 ?: throw IOException("User not found")
 
             wallViewModel = ViewModelProvider(this, WallViewModelFactory(user))
                 .get(WallViewModel::class.java)
         }
-        val adapter = PostAdapter()
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wall, container, false)
-        binding.postList.adapter = adapter
 
-        // Observujeme dotiahnutie postov do viewmodelu (refresh alebo zapnutie wallfragmentu)
-        wallViewModel.postsList.observe(viewLifecycleOwner, Observer {postsList ->
-            adapter.data = postsList
-        })
-
-        // Nafeeduj nastenku
-        wallViewModel.feedWall()
+        setupRecyclerView();
 
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
@@ -63,7 +57,7 @@ class WallFragment : Fragment() {
     }
 
     private fun handleOptionsItemSelected(item: MenuItem) {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.menu_logout -> {
                 // Vycisti saved preference
                 activity?.let { SaveSharedPreference.clearUsername(it) }
@@ -77,4 +71,30 @@ class WallFragment : Fragment() {
         }
     }
 
+    private fun setupRecyclerView() {
+        val adapter = PostAdapter(requireContext())
+
+        binding.postList.adapter = adapter
+
+        // Observujeme dotiahnutie postov do viewmodelu (refresh alebo zapnutie wallfragmentu)
+        wallViewModel.postsList.observe(viewLifecycleOwner, Observer {postsList ->
+            //TODO(toto je len pre debug, prvy nahrany prispevok zopakuje 10x
+            // pokial budeme mat nahranych viac prispevkov, moze sa dat do prdele)
+            val newLists= arrayListOf<PostItem>()
+            for (x in 0..10) {
+                newLists.add(postsList[0])
+            }
+
+            adapter.data = newLists
+        })
+
+        // Nafeeduj nastenku
+        wallViewModel.feedWall()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // Uvolni pamat exoplayerov
+        PlayerManager.releaseAll()
+    }
 }
