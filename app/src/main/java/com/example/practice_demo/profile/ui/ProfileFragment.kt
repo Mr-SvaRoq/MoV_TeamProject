@@ -62,8 +62,11 @@ class ProfileFragment : Fragment() {
 
         profileImg.setOnClickListener {
             if (askForPermissions()) {
+                // Gallery intent
                 val intent = Intent(Intent.ACTION_PICK)
+                // V galerii budu iba obrazky
                 intent.type = "image/*"
+                // Start intentu
                 startActivityForResult(intent, 1)
             }
         }
