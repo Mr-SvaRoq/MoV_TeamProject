@@ -19,7 +19,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 
-private const val BASE_URL = "http://api.mcomputing.eu/mobv/service.php/"
+private const val BASE_URL = "http://api.mcomputing.eu/mobv/"
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create())
@@ -59,15 +59,26 @@ interface ApiService {
     @POST("service.php")
     suspend fun refreshTokenService(@Body body: RefreshTokenRequest): UserLoginResponse
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("service.php")
     suspend fun signupService(@Body body: UserSignupRequest): UserLoginResponse
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
     @POST("service.php")
     suspend fun getPostsService(@Body body: GetPostsRequest): List<PostItem>
 
     @Multipart
-    @POST("service/upload.php")
-    suspend fun changePhotoService(@Part("data") body: ChangePhotoRequest, @Part file: MultipartBody.Part): ChangePhotoResponse
+    @POST("upload.php")
+    suspend fun changePhotoService(
+        @Part("data") body: ChangePhotoRequest,
+        @Part file: MultipartBody.Part
+    ): ChangePhotoResponse
 }
 
 object Api {
