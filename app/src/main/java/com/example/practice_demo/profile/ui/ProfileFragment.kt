@@ -13,16 +13,22 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.profile.data.model.UserProfile
+import com.example.practice_demo.wall.ui.WallViewModel
+import com.example.practice_demo.wall.ui.WallViewModelFactory
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 
 private lateinit var binding: FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
+    lateinit var profileViewModel: ProfileViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,9 +36,14 @@ class ProfileFragment : Fragment() {
 
         // Options menu
         setHasOptionsMenu(true)
-        val user = activity?.let { mainActivity ->
-            SaveSharedPreference.getUser(mainActivity)
+        val user = activity?.let {activity ->
+
+            SaveSharedPreference.getUser(activity)
+                ?: throw IOException("User not found")
         }
+
+        profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
+            .get(ProfileViewModel::class.java)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         if (user != null) {
@@ -93,7 +104,8 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 1){
-            profileImg.setImageURI(data?.data) // handle chosen image
+            //profileImg.setImageURI(data?.data) // handle chosen image
+            data?.data?.let { profileViewModel.changePhoto(it) }
         }
     }
 
