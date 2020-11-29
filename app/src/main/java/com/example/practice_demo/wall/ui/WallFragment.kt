@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
-import com.example.practice_demo.helper.PlayerManager
 import com.example.practice_demo.helper.SaveSharedPreference
-import com.example.practice_demo.wall.data.model.PostItem
+import com.example.practice_demo.wall.data.model.PostItemRecycler
+import kohii.v1.exoplayer.Kohii
 import java.io.IOException
 
 class WallFragment : Fragment() {
@@ -36,7 +39,7 @@ class WallFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wall, container, false)
 
-        setupRecyclerView();
+        setupRecyclerView()
 
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
@@ -72,29 +75,50 @@ class WallFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val adapter = PostAdapter(requireContext())
+        val kohii = Kohii[this]
+        kohii.register(this).addBucket(binding.postList)
+
+        val adapter = PostAdapter(
+            kohii,
+            this,
+            object: DiffUtil.ItemCallback<PostItemRecycler>() {
+                override fun areItemsTheSame(
+                    oldItem: PostItemRecycler,
+                    newItem: PostItemRecycler
+                ): Boolean =
+                    oldItem == newItem
+
+                override fun areContentsTheSame(
+                    oldItem: PostItemRecycler,
+                    newItem: PostItemRecycler
+                ): Boolean =
+                    oldItem.index == newItem.index
+            }
+        )
 
         binding.postList.adapter = adapter
 
         // Observujeme dotiahnutie postov do viewmodelu (refresh alebo zapnutie wallfragmentu)
-        wallViewModel.postsList.observe(viewLifecycleOwner, Observer {postsList ->
+        wallViewModel.postsList.observe(viewLifecycleOwner, { postsList ->
             //TODO(toto je len pre debug, prvy nahrany prispevok zopakuje 10x
             // pokial budeme mat nahranych viac prispevkov, moze sa dat do prdele)
-            val newLists= arrayListOf<PostItem>()
+            val newLists = arrayListOf<PostItemRecycler>()
             for (x in 0..10) {
-                newLists.add(postsList[0])
+                newLists.add(PostItemRecycler(postsList[0], x))
             }
 
-            adapter.data = newLists
+            adapter.submitList(newLists)
         })
+
+        // Snap helper zabezpeci, ze pri scrollnuti nas rovno hodi na dalsi prispevok (Parametrom
+        // vieme urcit ci swipe ma byt vertikalny alebo horizontalny
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val snapHelper = PagerSnapHelper()
+
+        binding.postList.layoutManager = layoutManager
+        snapHelper.attachToRecyclerView(binding.postList)
 
         // Nafeeduj nastenku
         wallViewModel.feedWall()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        // Uvolni pamat exoplayerov
-        PlayerManager.releaseAll()
     }
 }

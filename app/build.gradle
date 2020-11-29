@@ -30,6 +30,9 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        freeCompilerArgs += [
+            '-Xjvm-default=enable'
+        ]
     }
 
     buildTypes {
@@ -82,10 +85,18 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    // Exoplayer
+    // Exoplayer (Neupdatovat verziu)
     implementation "com.google.android.exoplayer:exoplayer:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
-    implementation "com.google.android.exoplayer:exoplayer-ui:$exoplayer_version"
 
+    // Kohii
+    implementation "im.ene.kohii:kohii-core:${kohii_version}"
+    implementation "im.ene.kohii:kohii-exoplayer:${kohii_version}"
+
+    // Pretty time
+    implementation 'org.ocpsoft.prettytime:prettytime:4.0.4.Final'
+
+    // Glide
+    implementation ("com.github.bumptech.glide:glide:4.11.0") {
+        exclude group: "com.android.support"
+    }
 }

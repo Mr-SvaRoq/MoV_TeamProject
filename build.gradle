@@ -8,7 +8,9 @@ buildscript {
         room_version = '2.2.5'
         version_retrofit = '2.9.0'
         version_moshi = "1.8.0"
-        exoplayer_version = "2.12.1"
+        // Nemenit tuto verziu, kohii nieje kompatibilny s inou verziou
+        exoplayer_version = "2.11.8"
+        kohii_version = "1.1.1.2011003"
     }
 
     repositories {
