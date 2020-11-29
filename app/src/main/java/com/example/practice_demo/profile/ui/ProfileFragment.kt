@@ -1,11 +1,9 @@
 package com.example.practice_demo.profile.ui
 
 import android.Manifest
-import android.R.attr
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
@@ -13,16 +11,22 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
+import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.profile.data.model.UserProfile
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 
 private lateinit var binding: FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
+    lateinit var profileViewModel: ProfileViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,9 +34,19 @@ class ProfileFragment : Fragment() {
 
         // Options menu
         setHasOptionsMenu(true)
-        val user = activity?.let { mainActivity ->
-            SaveSharedPreference.getUser(mainActivity)
+        val user = activity?.let {activity ->
+
+            SaveSharedPreference.getUser(activity)
+                ?: throw IOException("User not found")
         }
+
+        profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
+            .get(ProfileViewModel::class.java)
+
+        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer {hasPhoto ->
+            //TODO(Tu treba updatnut UI po zmene fotky)
+            // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
+        })
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         if (user != null) {
@@ -48,8 +62,11 @@ class ProfileFragment : Fragment() {
 
         profileImg.setOnClickListener {
             if (askForPermissions()) {
+                // Gallery intent
                 val intent = Intent(Intent.ACTION_PICK)
+                // V galerii budu iba obrazky
                 intent.type = "image/*"
+                // Start intentu
                 startActivityForResult(intent, 1)
             }
         }
@@ -93,7 +110,11 @@ class ProfileFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == 1){
-            profileImg.setImageURI(data?.data) // handle chosen image
+            //profileImg.setImageURI(data?.data) // handle chosen image
+            data?.data?.let {
+                val test = FileUtils.getPath(this.context, it)
+                profileViewModel.changePhoto(test)
+            }
         }
     }
 
