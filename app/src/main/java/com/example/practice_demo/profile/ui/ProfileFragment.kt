@@ -17,28 +17,32 @@ import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
 import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
+import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.profile.data.model.UserProfile
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.IOException
 
 private lateinit var binding: FragmentProfileBinding
+const val mediaUrlPrefix = "http://api.mcomputing.eu/mobv/uploads/"
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
     lateinit var profileViewModel: ProfileViewModel
+    lateinit var user: UserLoginResponse
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         // Options menu
         setHasOptionsMenu(true)
-        val user = activity?.let {activity ->
+        user = activity?.let { activity ->
 
             SaveSharedPreference.getUser(activity)
                 ?: throw IOException("User not found")
-        }
+        }!!
 
         profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
             .get(ProfileViewModel::class.java)
@@ -46,19 +50,48 @@ class ProfileFragment : Fragment() {
         profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer {hasPhoto ->
             //TODO(Tu treba updatnut UI po zmene fotky)
             // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
+            if(hasPhoto) {
+                changeImage()
+            }
         })
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        if (user != null) {
             binding.profile = UserProfile(user.username, user.email)
-        }
 
         // Inflate the layout for this fragment
         return binding.root
     }
 
+    private fun changeImage() {
+        context?.let {
+            Glide.with(it)
+                .load(mediaUrlPrefix + user.profile)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .into(profileImg)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        val user = activity?.let {activity ->
+
+            SaveSharedPreference.getUser(activity)
+                ?: throw IOException("User not found")
+        }
+
         profileImg = view.findViewById(R.id.profile_image)
+
+        if (user != null) {
+            if (user.profile !== ""){
+                context?.let {
+                    Glide.with(it).load(mediaUrlPrefix + user.profile)
+                        .apply(RequestOptions.skipMemoryCacheOf(true))
+                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                        .into(profileImg)
+                }
+            }
+        }
 
         profileImg.setOnClickListener {
             if (askForPermissions()) {

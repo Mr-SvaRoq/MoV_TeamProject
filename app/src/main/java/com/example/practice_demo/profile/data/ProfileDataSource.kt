@@ -14,11 +14,11 @@ import java.io.IOException
 class ProfileDataSource {
     suspend fun changePhoto(filePath: String, token: String): Result<ChangePhotoResponse> {
         lateinit var result: Result<ChangePhotoResponse>
-        try {
+        result = try {
             val picture = File(filePath)
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), picture)
             val photo = MultipartBody.Part.createFormData("image", "image.jpg", requestFile)
-            result = Result.Success(Api.retrofitService.changePhotoService(
+            Result.Success(Api.retrofitService.changePhotoService(
                 ChangePhotoRequest(
                     Api.API_KEY,
                     token
@@ -26,7 +26,7 @@ class ProfileDataSource {
                 photo
             ))
         } catch (e: Exception) {
-            result =  Result.Error(IOException("Error changing photo", e))
+            Result.Error(IOException("Error changing photo", e))
         }
 
         return result

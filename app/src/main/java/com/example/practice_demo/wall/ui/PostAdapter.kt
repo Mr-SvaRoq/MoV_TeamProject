@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.PostViewBinding
 import com.example.practice_demo.wall.data.model.PostItemRecycler
@@ -62,6 +64,8 @@ class PostAdapter(
         if (item.postItem.profile != "") {
             Glide.with(fragment)
                 .load(mediaUrlPrefix + item.postItem.profile)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(holder.binding.profilePicture)
         }
 
