@@ -13,6 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
 import com.example.practice_demo.helper.FileUtils

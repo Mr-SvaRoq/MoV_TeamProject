@@ -83,6 +83,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //circular images
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     // Exoplayer (Neupdatovat verziu)
