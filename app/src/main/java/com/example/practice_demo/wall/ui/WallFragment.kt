@@ -1,11 +1,15 @@
 package com.example.practice_demo.wall.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +18,7 @@ import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.wall.data.model.PostItemRecycler
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kohii.v1.exoplayer.Kohii
 import java.io.IOException
 
@@ -44,8 +49,18 @@ class WallFragment : Fragment() {
         // Specify the current activity as the lifecycle owner of the binding.
         // This is necessary so that the binding can observe LiveData updates.
         binding.lifecycleOwner = this
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val actionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+
+        actionButton.setOnClickListener {
+            Log.d("TAG", "CLICKED MUHAHAHHA")
+            view.findNavController().navigate(R.id.action_wallFragment_to_newPostFragment)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
