@@ -76,13 +76,6 @@ class WallFragment : Fragment() {
 
     private fun handleOptionsItemSelected(item: MenuItem) {
         when (item.itemId) {
-            R.id.menu_logout -> {
-                // Vycisti saved preference
-                activity?.let { SaveSharedPreference.clearUsername(it) }
-                // Presmeruj na login
-                findNavController().navigate(WallFragmentDirections.actionWallFragmentToLoginFragment())
-            }
-
             R.id.menu_viewProfile -> {
                 findNavController().navigate(WallFragmentDirections.actionWallFragmentToProfileFragment())
             }
