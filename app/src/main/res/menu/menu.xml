@@ -8,9 +8,4 @@
         android:title="@string/view_profile"
         android:icon="@drawable/profile"/>
 
-    <item
-        android:id="@+id/menu_logout"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/logout"
-        android:title="@string/logout" />
 </menu>
