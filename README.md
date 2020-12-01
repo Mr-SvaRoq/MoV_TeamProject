@@ -1,7 +1,12 @@
-# Mobilné výpočty FEI 2020/2021 Zimný semseter
+# Mobilné výpočty FEI 2020/2021 Zimný semseter - TEAM 6
+Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s možnosťou pridania video príspevkov.
 
-Stránka predmetu [Mobilné výpočty](http://android.mpage.sk/). 
+## Developerský tím
+- Hlatký, Radoslav
+- Klement, Matúš
+- Nguyen Tien, Dinh
+- Tran Minh, Hung 
 
-Stránka kurzu [udacity](https://www.udacity.com/course/developing-android-apps-with-kotlin--ud9012) #03-01
-
-Každá lesson je pod inou branchou
+## Potrebné linky
+[Trello](https://trello.com/b/ixg5c3I8/mov) -> pre developerov
+[Mobilné výpočty](http://android.mpage.sk/) -> stránka predmetu 
