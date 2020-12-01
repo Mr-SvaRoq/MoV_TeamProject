@@ -15,16 +15,19 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.navigation.findNavController
 import com.example.practice_demo.R
-import com.example.practice_demo.wall.ui.WallFragment
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
 
 
 private const val FILE_NAME = "camera_team6_"
 private const val REQUEST_VIDEO_CAPTURE = 1
 private const  val RECORD_REQUEST_CODE = 101
+private const  val PICK_VIDEO_CODE = 42
+//private var photoUri: Uri? = null
+
+//location of videoFIle
 private lateinit var videoFile: File
 
 class NewPostActivity : AppCompatActivity() {
@@ -51,9 +54,13 @@ class NewPostActivity : AppCompatActivity() {
     private fun setOnClickListenerMakeVideo() {
         btnMakeVideo.setOnClickListener {
             val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+
             videoFile = getVideoFile(FILE_NAME)
             val fileProvider = FileProvider.getUriForFile(this, "com.example.practice_demo.activity.fileprovider", videoFile)
+            //Add extended data to the intent.
             takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+
+            //check if any camera in this device
             if (takeVideoIntent.resolveActivity(this.packageManager) != null) {
                 startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
             } else {
@@ -64,7 +71,12 @@ class NewPostActivity : AppCompatActivity() {
 
     private fun setOnClickListenerUploadVideo() {
         btnUploadVideo.setOnClickListener{
-            Log.i("Upload video", "functiont called")
+            Log.i("Upload video: ", "function called")
+            val videoPickerIntent = Intent(Intent.ACTION_GET_CONTENT)
+            videoPickerIntent.type = "video/*"
+            if (videoPickerIntent.resolveActivity(this.packageManager) != null) {
+                startActivityForResult(videoPickerIntent, PICK_VIDEO_CODE)
+            }
         }
     }
 
@@ -79,18 +91,21 @@ class NewPostActivity : AppCompatActivity() {
         return File.createTempFile(fileName, ".mp4", storageDirectory)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val takenImage = Uri.parse(videoFile.absolutePath)
-            videoView.setVideoURI(takenImage)
+        //check if successfully take video
+        if (resultCode == Activity.RESULT_OK) {
+            var videoToView: Uri? = null
+            when(requestCode) {
+                REQUEST_VIDEO_CAPTURE -> {videoToView = Uri.parse(videoFile.absolutePath)}
+                PICK_VIDEO_CODE -> {videoToView = data?.data}
+            }
+            videoView.setVideoURI(videoToView)
             val mediaController = MediaController(this)
             mediaController.setMediaPlayer(videoView)
             videoView.setMediaController(mediaController)
             videoView.start()
         } else {
-            super
-                .onActivityResult(requestCode, resultCode, data)
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -102,26 +117,19 @@ class NewPostActivity : AppCompatActivity() {
                 grantResults.forEachIndexed {index, element ->
                     if (grantResults.isEmpty() || element != PackageManager.PERMISSION_GRANTED) {
                         Log.i(permissions[index], "Permission has been denied by user")
-
                     } else {
                         Log.i(permissions[index], "Permission has been granted by user")
                         accessToNewPost = true
                     }
 
                     when (index) {
-                        0 -> {
-                            btnUploadVideo.isEnabled = element == 0
-                        }
-                        1 -> {
-                            btnMakeVideo.isEnabled = element == 0
-                        }
+                        0 -> {btnUploadVideo.isEnabled = element == 0}
+                        1 -> {btnMakeVideo.isEnabled = element == 0}
                     }
                 }
 
-                if (!accessToNewPost) {
+                if (!accessToNewPost)
                     finish()
-                }
-
             }
         }
     }
