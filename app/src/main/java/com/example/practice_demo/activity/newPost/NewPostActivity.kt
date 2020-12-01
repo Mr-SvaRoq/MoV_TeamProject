@@ -16,6 +16,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.practice_demo.R
+import com.google.android.exoplayer2.SimpleExoPlayer
+import kohii.v1.core.Common
+import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
@@ -31,14 +34,16 @@ private const  val PICK_VIDEO_CODE = 42
 private lateinit var videoFile: File
 
 class NewPostActivity : AppCompatActivity() {
-    
+    private var kohii: Kohii? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
-
         setupPermissions()
         setOnClickListenerMakeVideo()
         setOnClickListenerUploadVideo()
+        kohii = Kohii[this]
+        kohii?.register(this)?.addBucket(videoExoFrame)
     }
 
     private fun setupPermissions() {
@@ -99,11 +104,15 @@ class NewPostActivity : AppCompatActivity() {
                 REQUEST_VIDEO_CAPTURE -> {videoToView = Uri.parse(videoFile.absolutePath)}
                 PICK_VIDEO_CODE -> {videoToView = data?.data}
             }
-            videoView.setVideoURI(videoToView)
-            val mediaController = MediaController(this)
-            mediaController.setMediaPlayer(videoView)
-            videoView.setMediaController(mediaController)
-            videoView.start()
+            if (videoToView != null) {
+//                kohii?.setUp("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")?.bind(videoExoPlayer)
+                kohii?.setUp(videoToView)?.bind(videoExoPlayer)
+//                {
+//                    preload = true
+//                    repeatMode = Common.REPEAT_MODE_ONE
+//                }
+
+            }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }

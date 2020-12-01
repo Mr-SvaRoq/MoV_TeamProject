@@ -36,13 +36,22 @@
         android:text="@string/new_post_upload_video" />
     </LinearLayout>
     <FrameLayout
+        android:id="@+id/videoExoFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="wrap_content"
-            android:layout_height="400dp"
-            android:layout_marginTop="16dp"
-            android:src="@mipmap/ic_launcher" />
+<!--        <VideoView-->
+<!--            android:id="@+id/videoView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="400dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:src="@mipmap/ic_launcher" />-->
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/videoExoPlayer"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            app:resize_mode="fill"
+            app:surface_type="surface_view"
+            app:use_controller="false"/>
     </FrameLayout>
 </LinearLayout>
