@@ -33,24 +33,12 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
-        if (setupPermissions()) {
-            btnMakeVideo.setOnClickListener {
-                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-                videoFile = getVideoFile(FILE_NAME)
-                val fileProvider = FileProvider.getUriForFile(this, "com.example.practice_demo.activity.fileprovider", videoFile)
-                takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
-                if (takeVideoIntent.resolveActivity(this.packageManager) != null) {
-                    startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
-                } else {
-                    Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-
+        setupPermissions()
+        setOnClickListenerMakeVideo()
+        setOnClickListenerUploadVideo()
     }
 
-    private fun setupPermissions() : Boolean {
+    private fun setupPermissions() {
         val permissionExternalStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         val permissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
 
@@ -58,8 +46,26 @@ class NewPostActivity : AppCompatActivity() {
             Log.i("Permission: ", "Permission to access external storage or camera is denied -> making request")
             makeRequest()
         }
+    }
 
-        return true
+    private fun setOnClickListenerMakeVideo() {
+        btnMakeVideo.setOnClickListener {
+            val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            videoFile = getVideoFile(FILE_NAME)
+            val fileProvider = FileProvider.getUriForFile(this, "com.example.practice_demo.activity.fileprovider", videoFile)
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+            if (takeVideoIntent.resolveActivity(this.packageManager) != null) {
+                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
+            } else {
+                Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setOnClickListenerUploadVideo() {
+        btnUploadVideo.setOnClickListener{
+            Log.i("Upload video", "functiont called")
+        }
     }
 
     private fun makeRequest() {

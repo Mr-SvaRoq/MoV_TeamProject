@@ -7,6 +7,7 @@
     tools:context=".activity.newPost.NewPostActivity"
     android:orientation="vertical">
 
+<!--    //TODO pridat navigaciu na predosli fragment, resp ukoncenie activity. finish()-->
 
     <LinearLayout
         android:id="@+id/LinearLayout02"
