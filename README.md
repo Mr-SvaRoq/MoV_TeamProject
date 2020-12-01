@@ -8,6 +8,5 @@ Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s 
 - Tran Minh, Hung 
 
 ## Potrebné linky
-[Trello](https://trello.com/b/ixg5c3I8/mov) -> pre developerov
-
-[Mobilné výpočty](http://android.mpage.sk/) -> stránka predmetu 
+- [Trello](https://trello.com/b/ixg5c3I8/mov) -> pre developerov
+- [Mobilné výpočty](http://android.mpage.sk/) -> stránka predmetu 
