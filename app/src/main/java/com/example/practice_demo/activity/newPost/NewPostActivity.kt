@@ -73,7 +73,7 @@ class NewPostActivity : AppCompatActivity() {
         btnUploadVideo.setOnClickListener{
             Log.i("Upload video: ", "function called")
             val videoPickerIntent = Intent(Intent.ACTION_GET_CONTENT)
-            videoPickerIntent.type = "video/*"
+            videoPickerIntent.type = "video/mp4"
             if (videoPickerIntent.resolveActivity(this.packageManager) != null) {
                 startActivityForResult(videoPickerIntent, PICK_VIDEO_CODE)
             }
