@@ -58,8 +58,8 @@ class WallFragment : Fragment() {
         val actionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
 
         actionButton.setOnClickListener {
-            Log.d("TAG", "CLICKED MUHAHAHHA")
-            view.findNavController().navigate(R.id.action_wallFragment_to_newPostFragment)
+//            Log.d("TAG", "CLICKED MUHAHAHHA")
+            view.findNavController().navigate(R.id.action_wallFragment_to_newPostActivity)
         }
     }
 

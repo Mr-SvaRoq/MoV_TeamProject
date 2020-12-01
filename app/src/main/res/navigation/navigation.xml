@@ -45,16 +45,16 @@
             android:id="@+id/action_wallFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
-            android:id="@+id/action_wallFragment_to_newPostFragment"
-            app:destination="@id/newPostFragment" />
+            android:id="@+id/action_wallFragment_to_newPostActivity"
+            app:destination="@id/newPostActivity" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.practice_demo.profile.ui.ProfileFragment"
         android:label="ProfileFragment" />
-    <fragment
-        android:id="@+id/newPostFragment"
-        android:name="com.example.practice_demo.newPost.ui.NewPostFragment"
-        android:label="@string/new_post"
-        tools:layout="@layout/new_post_fragment" />
+    <activity
+        android:id="@+id/newPostActivity"
+        android:name="com.example.practice_demo.activity.newPost.NewPostActivity"
+        android:label="activity_new_post"
+        tools:layout="@layout/activity_new_post" />
 </navigation>
