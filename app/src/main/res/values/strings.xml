@@ -26,6 +26,7 @@
     <string name="new_post">New post</string>
     <string name="new_post_make_video">Make Video</string>
     <string name="new_post_upload_video">Upload Video</string>
+    <string name="new_post_submit">Post</string>
     <string name="toast_video_stopped">Video has been stopped. Tap to continue</string>
     <string name="toast_video_resumed">Video has been resumed</string>
     <string name="pause_image">Pause image</string>

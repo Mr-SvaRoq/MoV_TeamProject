@@ -15,7 +15,14 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import com.example.practice_demo.R
+import com.example.practice_demo.helper.Constants.Companion.FILE_NAME
+import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
+import com.example.practice_demo.helper.Constants.Companion.PICK_VIDEO_CODE
+import com.example.practice_demo.helper.Constants.Companion.RECORD_REQUEST_CODE
+import com.example.practice_demo.helper.Constants.Companion.REQUEST_VIDEO_CAPTURE
+import com.example.practice_demo.helper.FileUtils
 import com.google.android.exoplayer2.SimpleExoPlayer
 import kohii.v1.core.Common
 import kohii.v1.exoplayer.Kohii
@@ -23,14 +30,6 @@ import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
 
-
-private const val FILE_NAME = "camera_team6_"
-private const val REQUEST_VIDEO_CAPTURE = 1
-private const  val RECORD_REQUEST_CODE = 101
-private const  val PICK_VIDEO_CODE = 42
-//private var photoUri: Uri? = null
-
-//location of videoFIle
 private lateinit var videoFile: File
 
 class NewPostActivity : AppCompatActivity() {
@@ -42,8 +41,10 @@ class NewPostActivity : AppCompatActivity() {
         setupPermissions()
         setOnClickListenerMakeVideo()
         setOnClickListenerUploadVideo()
+        setOnClickListenerSubmit()
         kohii = Kohii[this]
         kohii?.register(this)?.addBucket(videoExoFrame)
+        btnSubmit.isEnabled = false
     }
 
     private fun setupPermissions() {
@@ -85,6 +86,12 @@ class NewPostActivity : AppCompatActivity() {
         }
     }
 
+    private fun setOnClickListenerSubmit() {
+        btnSubmit.setOnClickListener{
+            Log.i("Submit: ", "function called")
+        }
+    }
+
     private fun makeRequest() {
         ActivityCompat.requestPermissions(this,
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA), RECORD_REQUEST_CODE)
@@ -96,16 +103,36 @@ class NewPostActivity : AppCompatActivity() {
         return File.createTempFile(fileName, ".mp4", storageDirectory)
     }
 
+    private fun checkSize(size: Long): Boolean {
+        if (size > MAX_VIDEO_SIZE) {
+            Toast.makeText(this, "File is bigger than 8 MiB", Toast.LENGTH_SHORT).show()
+            btnSubmit.isEnabled = false
+            return false
+        }
+        return true
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //check if successfully take video
         if (resultCode == Activity.RESULT_OK) {
             var videoToView: Uri? = null
             when(requestCode) {
-                REQUEST_VIDEO_CAPTURE -> {videoToView = Uri.parse(videoFile.absolutePath)}
-                PICK_VIDEO_CODE -> {videoToView = data?.data}
+                REQUEST_VIDEO_CAPTURE -> {
+                    if (!checkSize(videoFile.length())){
+                        return
+                    }
+                    videoToView = Uri.parse(videoFile.absolutePath)
+                }
+                PICK_VIDEO_CODE -> {
+                    val path = FileUtils.getPath(this, data?.data)
+                    var size = File(path).length()
+                    if (!checkSize(size)){
+                        return
+                    }
+                    videoToView = data?.data
+                }
             }
             if (videoToView != null) {
-//                kohii?.setUp("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")?.bind(videoExoPlayer)
                 kohii?.setUp(videoToView)?.bind(videoExoPlayer)
 //                {
 //                    preload = true
@@ -137,8 +164,10 @@ class NewPostActivity : AppCompatActivity() {
                     }
                 }
 
-                if (!accessToNewPost)
+                if (!accessToNewPost){
+                    btnSubmit.isEnabled = false
                     finish()
+                }
             }
         }
     }
