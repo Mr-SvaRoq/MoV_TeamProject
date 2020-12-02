@@ -29,6 +29,8 @@
     <string name="new_post_submit">Post</string>
     <string name="toast_video_stopped">Video has been stopped. Tap to continue</string>
     <string name="toast_video_resumed">Video has been resumed</string>
+    <string name="cannot_upload_video_size">Cannot upload video -> bigger than 8 MiB</string>
+    <string name="cannot_upload_picture_size">Cannot upload picture -> bigger than 8 MiB</string>
     <string name="pause_image">Pause image</string>
     <string name="change_password">Change password</string>
 </resources>

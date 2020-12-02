@@ -105,7 +105,7 @@ class NewPostActivity : AppCompatActivity() {
 
     private fun checkSize(size: Long): Boolean {
         if (size > MAX_VIDEO_SIZE) {
-            Toast.makeText(this, "File is bigger than 8 MiB", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.cannot_upload_video_size), Toast.LENGTH_SHORT).show()
             btnSubmit.isEnabled = false
             return false
         }

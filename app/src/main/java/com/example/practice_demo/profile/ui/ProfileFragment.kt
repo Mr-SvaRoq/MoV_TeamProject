@@ -164,7 +164,7 @@ class ProfileFragment : Fragment() {
                 val test = FileUtils.getPath(this.context, it)
                 var size = File(test).length()
                 if (size > MAX_VIDEO_SIZE) {
-                    Toast.makeText(context, "Picture is bigger than 8 MiB", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.cannot_upload_picture_size), Toast.LENGTH_SHORT).show()
                     return
                 }
 
