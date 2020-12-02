@@ -134,6 +134,7 @@ class NewPostActivity : AppCompatActivity() {
             }
             if (videoToView != null) {
                 kohii?.setUp(videoToView)?.bind(videoExoPlayer)
+                btnSubmit.isEnabled = true
 //                {
 //                    preload = true
 //                    repeatMode = Common.REPEAT_MODE_ONE
