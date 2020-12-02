@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,12 +21,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
+import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
 import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.profile.data.model.UserProfile
 import com.example.practice_demo.wall.ui.WallFragmentDirections
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
 import java.io.IOException
 
 private lateinit var binding: FragmentProfileBinding
@@ -159,6 +162,12 @@ class ProfileFragment : Fragment() {
             //profileImg.setImageURI(data?.data) // handle chosen image
             data?.data?.let {
                 val test = FileUtils.getPath(this.context, it)
+                var size = File(test).length()
+                if (size > MAX_VIDEO_SIZE) {
+                    Toast.makeText(context, "Picture is bigger than 8 MiB", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
                 profileViewModel.changePhoto(test)
             }
         }

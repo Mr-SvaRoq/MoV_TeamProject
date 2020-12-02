@@ -114,7 +114,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun updateUiWithUser(model: UserLoginResponse) {
-        val welcome = getString(R.string.welcome) + model.username
+        val welcome = getString(R.string.welcome) + " " +model.username
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
