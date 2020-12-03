@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.FieldValidator
+import com.example.practice_demo.helper.Result
 import com.example.practice_demo.signup.data.SignupRepository
 import kotlinx.coroutines.launch
-import com.example.practice_demo.helper.Result
 
-class SignupViewModel(private val signupRepository: SignupRepository): ViewModel() {
+class SignupViewModel(private val signupRepository: SignupRepository) : ViewModel() {
 
     private val _signupForm = MutableLiveData<SignupFormState>()
     val signupFormState: LiveData<SignupFormState> = _signupForm

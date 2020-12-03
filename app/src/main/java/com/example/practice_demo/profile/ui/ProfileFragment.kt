@@ -13,7 +13,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -21,18 +20,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
+import com.example.practice_demo.helper.Constants
 import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
 import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.profile.data.model.UserProfile
-import com.example.practice_demo.wall.ui.WallFragmentDirections
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
 import java.io.IOException
 
 private lateinit var binding: FragmentProfileBinding
-const val mediaUrlPrefix = "http://api.mcomputing.eu/mobv/uploads/"
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
@@ -56,7 +54,7 @@ class ProfileFragment : Fragment() {
         profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
             .get(ProfileViewModel::class.java)
 
-        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer {hasPhoto ->
+        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
             // update UI po zmene fotky)
             // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
             changeImage(hasPhoto)
@@ -72,7 +70,7 @@ class ProfileFragment : Fragment() {
     private fun changeImage(hasPhoto: Boolean) {
             context?.let {
                 Glide.with(it)
-                    .load(mediaUrlPrefix + user.profile)
+                    .load(Constants.Api.MEDIA_URL + user.profile)
                     .apply(RequestOptions.skipMemoryCacheOf(true))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .fallback(R.drawable.user)
@@ -93,7 +91,7 @@ class ProfileFragment : Fragment() {
         if (user != null) {
             if (user.profile !== ""){
                 context?.let {
-                    Glide.with(it).load(mediaUrlPrefix + user.profile)
+                    Glide.with(it).load(Constants.Api.MEDIA_URL + user.profile)
                         .apply(RequestOptions.skipMemoryCacheOf(true))
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                         .into(profileImg)
@@ -162,7 +160,7 @@ class ProfileFragment : Fragment() {
             //profileImg.setImageURI(data?.data) // handle chosen image
             data?.data?.let {
                 val test = FileUtils.getPath(this.context, it)
-                var size = File(test).length()
+                val size = File(test).length()
                 if (size > MAX_VIDEO_SIZE) {
                     Toast.makeText(context, getString(R.string.cannot_upload_picture_size), Toast.LENGTH_SHORT).show()
                     return

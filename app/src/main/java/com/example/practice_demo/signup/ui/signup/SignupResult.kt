@@ -7,5 +7,5 @@ import com.example.practice_demo.login.data.model.UserLoginResponse
  */
 data class SignupResult(
     val success: UserLoginResponse? = null,
-    val error: Int? = null
+    val error: Int? = null,
 )

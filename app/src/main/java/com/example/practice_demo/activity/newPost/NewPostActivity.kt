@@ -5,17 +5,15 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.MediaController
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.Constants.Companion.FILE_NAME
 import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
@@ -23,11 +21,8 @@ import com.example.practice_demo.helper.Constants.Companion.PICK_VIDEO_CODE
 import com.example.practice_demo.helper.Constants.Companion.RECORD_REQUEST_CODE
 import com.example.practice_demo.helper.Constants.Companion.REQUEST_VIDEO_CAPTURE
 import com.example.practice_demo.helper.FileUtils
-import com.google.android.exoplayer2.SimpleExoPlayer
-import kohii.v1.core.Common
 import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.File
 
 private lateinit var videoFile: File

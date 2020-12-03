@@ -13,39 +13,35 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    suspend fun login(username: String, password: String): Result<UserLoginResponse> {
-        lateinit var result: Result<UserLoginResponse>
+    suspend fun login(username: String, password: String): Result<UserLoginResponse> =
         try {
-            result = Result.Success(Api.retrofitService.loginService(
-                UserLoginRequest(
-                    ServiceAction.LOGIN.action,
-                    Api.API_KEY,
-                    username,
-                    password,
+            Result.Success(
+                Api.retrofitService.loginService(
+                    UserLoginRequest(
+                        ServiceAction.LOGIN.action,
+                        Api.API_KEY,
+                        username,
+                        password,
+                    )
                 )
-            ))
+            )
         } catch (e: Exception) {
-            result =  Result.Error(IOException("Error logging in", e))
+            Result.Error(IOException("Error logging in", e))
         }
 
-        return result
-    }
-
-    suspend fun logout(refreshToken: String): Result<UserLoginResponse> {
-        lateinit var result: Result<UserLoginResponse>
-
+    suspend fun refreshToken(refreshToken: String): Result<UserLoginResponse> =
         try {
-            result = Result.Success(Api.retrofitService.refreshTokenService(
-                RefreshTokenRequest(
-                    ServiceAction.REFRESH_TOKEN.action,
-                    Api.API_KEY,
-                    refreshToken,
+            Result.Success(
+                Api.retrofitService.refreshTokenService(
+                    RefreshTokenRequest(
+                        ServiceAction.REFRESH_TOKEN.action,
+                        Api.API_KEY,
+                        refreshToken,
+                    )
                 )
-            ))
+            )
         } catch (e: Exception) {
-            result =  Result.Error(IOException("Token refreshing failed", e))
+            Result.Error(IOException("Token refreshing failed", e))
         }
 
-        return result
-    }
 }
