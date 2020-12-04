@@ -32,4 +32,7 @@
     <string name="cannot_upload_picture_size">Cannot upload picture -> bigger than 8 MiB</string>
     <string name="pause_image">Pause image</string>
     <string name="change_password">Change password</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm">Confirm</string>
 </resources>

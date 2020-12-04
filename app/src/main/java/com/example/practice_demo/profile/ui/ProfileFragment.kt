@@ -22,6 +22,7 @@ import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentProfileBinding
 import com.example.practice_demo.helper.Constants
 import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
+import com.example.practice_demo.helper.CustomCallbackFactory
 import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.login.data.model.UserLoginResponse
@@ -115,6 +116,7 @@ class ProfileFragment : Fragment() {
             // Presmeruj na login
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
         }
+        binding.profileChangePassword.setOnClickListener(CustomCallbackFactory.getButtonNavigateToId(findNavController(), ProfileFragmentDirections.actionProfileFragmentToPasswordFragment()))
 
 
     }
