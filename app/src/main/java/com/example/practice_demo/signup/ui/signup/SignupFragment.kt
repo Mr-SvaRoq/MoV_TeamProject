@@ -37,7 +37,7 @@ class SignupFragment : Fragment() {
         signupViewModel = ViewModelProvider(this, SignupViewModelFactory())
             .get(SignupViewModel::class.java)
 
-        val emailEditText    = view.findViewById<EditText>(R.id.email)
+        val emailEditText = view.findViewById<EditText>(R.id.email)
         val usernameEditText = view.findViewById<EditText>(R.id.username)
         val passwordEditText = view.findViewById<EditText>(R.id.password)
 
@@ -45,15 +45,15 @@ class SignupFragment : Fragment() {
         val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
         val navigateToLogin = view.findViewById<Button>(R.id.toLoginFragment)
 
-            navigateToLogin.setOnClickListener(
-                CustomCallbackFactory.getButtonNavigateToId(
-                    findNavController(),
-                    SignupFragmentDirections.actionSignupFragmentToLoginFragment()
-                )
+        navigateToLogin.setOnClickListener(
+            CustomCallbackFactory.getButtonNavigateToId(
+                findNavController(),
+                SignupFragmentDirections.actionSignupFragmentToLoginFragment()
             )
+        )
 
         signupViewModel.signupFormState.observe(viewLifecycleOwner,
-            Observer {  formState ->
+            Observer { formState ->
                 if (formState == null) {
                     return@Observer
                 }
@@ -75,30 +75,42 @@ class SignupFragment : Fragment() {
             })
 
         signupViewModel.signupResult.observe(viewLifecycleOwner,
-            Observer {result ->
+            Observer { result ->
                 result ?: return@Observer
 
                 loadingProgressBar.visibility = View.GONE
 
-                result.error?.let {err ->
+                result.error?.let { err ->
                     afterSignupFailure(err)
                 }
 
-                result.success?.let {userLoginResponse ->
+                result.success?.let { userLoginResponse ->
 
                     afterSignupSuccess(userLoginResponse)
                     // Po registracii automaticky prihlasime usera
                     findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToWallFragment())
-                    activity?.let {
-                        mainActivity -> SaveSharedPreference.setUser(mainActivity, userLoginResponse)
+                    activity?.let { mainActivity ->
+                        SaveSharedPreference.setUser(mainActivity, userLoginResponse)
                     }
                 }
             })
 
         val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { /*ignore*/ }
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int
+            ) { /*ignore*/
+            }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { /*ignore*/ }
+            override fun onTextChanged(
+                s: CharSequence,
+                start: Int,
+                before: Int,
+                count: Int
+            ) { /*ignore*/
+            }
 
             override fun afterTextChanged(s: Editable) {
                 signupViewModel.signupDataChanged(

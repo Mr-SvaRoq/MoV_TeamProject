@@ -46,7 +46,7 @@
             tools:text="email@email.com" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/profile_change_password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"

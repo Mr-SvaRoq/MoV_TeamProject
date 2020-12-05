@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.practice_demo.signup.data.SignupDataSource
 import com.example.practice_demo.signup.data.SignupRepository
 
-class SignupViewModelFactory(): ViewModelProvider.Factory {
+class SignupViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

@@ -1,8 +1,10 @@
 package com.example.practice_demo.network
 
+import com.example.practice_demo.helper.Constants
 import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.password.data.model.ChangePasswordRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoResponse
 import com.example.practice_demo.signup.data.model.UserSignupRequest
@@ -11,19 +13,14 @@ import com.example.practice_demo.wall.data.model.PostItem
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 
 
-private const val BASE_URL = "http://api.mcomputing.eu/mobv/"
-
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create())
-    .baseUrl(BASE_URL)
+    .baseUrl(Constants.Api.BASE_URL)
     .build()
 
 private val moshi = Moshi.Builder()
@@ -73,6 +70,13 @@ interface ApiService {
     @POST("service.php")
     suspend fun getPostsService(@Body body: GetPostsRequest): List<PostItem>
 
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("service.php")
+    suspend fun changePasswordService(@Body body: ChangePasswordRequest): UserLoginResponse
+
     @Multipart
     @POST("upload.php")
     suspend fun changePhotoService(
@@ -86,6 +90,5 @@ object Api {
        retrofit.create(ApiService::class.java)
     }
 
-    //Todo: uskladnit na safe miesto
-    const val API_KEY = "kS3lX8pX2aM0rM4hA7kE1aU9sP5rL3"
+    const val API_KEY = Constants.Api.KEY
 }

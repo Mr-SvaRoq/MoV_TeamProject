@@ -4,33 +4,18 @@ import com.example.practice_demo.helper.PasswordHasher
 import com.example.practice_demo.helper.Result
 import com.example.practice_demo.login.data.model.UserLoginResponse
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
-
 class LoginRepository(val dataSource: LoginDataSource) {
 
     // in-memory cache of the loggedInUser object
     var user: UserLoginResponse? = null
         private set
 
-
-    //todo: toto mozno padne vhod
-    val isLoggedIn: Boolean
-        get() = user != null
-
     init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
         user = null
     }
 
-    //todo: Bude treba volat len pokial chceme odhlasit zo vsetkych zariadeni
-    // lebo toto vola request an zmenu tokenu
-    suspend fun logout(refreshToken: String): Result<UserLoginResponse> {
-        // handle login
-        val result = dataSource.logout(refreshToken)
+    suspend fun refreshToken(refreshToken: String): Result<UserLoginResponse> {
+        val result = dataSource.refreshToken(refreshToken)
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)
@@ -40,7 +25,6 @@ class LoginRepository(val dataSource: LoginDataSource) {
     }
 
     suspend fun login(username: String, password: String): Result<UserLoginResponse> {
-        // handle login
         // Musime poslat hash hesla
         val result = dataSource.login(
             username,
@@ -56,7 +40,5 @@ class LoginRepository(val dataSource: LoginDataSource) {
 
     private fun setLoggedInUser(loggedInUser: UserLoginResponse) {
         this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 }
