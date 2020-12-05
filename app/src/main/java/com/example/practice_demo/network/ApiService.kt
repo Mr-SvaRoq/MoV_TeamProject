@@ -1,10 +1,9 @@
 package com.example.practice_demo.network
 
 import com.example.practice_demo.helper.Constants
-import com.example.practice_demo.login.data.model.RefreshTokenRequest
-import com.example.practice_demo.login.data.model.UserLoginRequest
-import com.example.practice_demo.login.data.model.UserLoginResponse
-import com.example.practice_demo.password.data.model.ChangePasswordRequest
+import com.example.practice_demo.change_password.data.model.ChangePasswordRequest
+import com.example.practice_demo.change_password.data.model.ChangePasswordResponse
+import com.example.practice_demo.login.data.model.*
 import com.example.practice_demo.profile.data.model.ChangePhotoRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoResponse
 import com.example.practice_demo.signup.data.model.UserSignupRequest
@@ -48,6 +47,13 @@ interface ApiService {
     )
     @POST("service.php")
     suspend fun loginService(@Body body: UserLoginRequest): UserLoginResponse
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("service.php")
+    suspend fun passwordService(@Body body: ChangePasswordRequest): ChangePasswordResponse
 
     @Headers(
         "Accept: application/json",

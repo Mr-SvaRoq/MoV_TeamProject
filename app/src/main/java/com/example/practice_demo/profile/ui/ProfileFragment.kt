@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment() {
         profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
             .get(ProfileViewModel::class.java)
 
-        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
+        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer{ hasPhoto ->
             // update UI po zmene fotky)
             // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
             changeImage(hasPhoto)
@@ -88,15 +89,13 @@ class ProfileFragment : Fragment() {
         }
 
         profileImg = view.findViewById(R.id.profile_image)
-        val logoutButton: Button = view.findViewById(R.id.profile_logout)
+
         if (user != null) {
-            if (user.profile !== ""){
-                context?.let {
-                    Glide.with(it).load(Constants.Api.MEDIA_URL + user.profile)
-                        .apply(RequestOptions.skipMemoryCacheOf(true))
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(profileImg)
-                }
+            context?.let {
+                Glide.with(it).load(Constants.Api.MEDIA_URL + user.profile)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .into(profileImg)
             }
         }
 
@@ -111,13 +110,19 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        val changePasswordBtn: Button = view.findViewById(R.id.change_password)
+
+        changePasswordBtn.setOnClickListener {
+            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToPasswordFragment())
+        }
+
+
+        val logoutButton: Button = view.findViewById(R.id.profile_logout)
         logoutButton.setOnClickListener {
             activity?.let { SaveSharedPreference.clearUsername(it) }
             // Presmeruj na login
             findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToLoginFragment())
         }
-        binding.profileChangePassword.setOnClickListener(CustomCallbackFactory.getButtonNavigateToId(findNavController(), ProfileFragmentDirections.actionProfileFragmentToPasswordFragment()))
-
 
     }
 
