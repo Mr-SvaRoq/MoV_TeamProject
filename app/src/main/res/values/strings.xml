@@ -31,8 +31,11 @@
     <string name="cannot_upload_video_size">Cannot upload video -> bigger than 8 MiB</string>
     <string name="cannot_upload_picture_size">Cannot upload picture -> bigger than 8 MiB</string>
     <string name="pause_image">Pause image</string>
+    <string name="new_password">New password</string>
+    <string name="old_password">Old password</string>
+    <string name="change_your_password">Change your password</string>
+    <string name="not_match_password">Password do not match</string>
     <string name="change_password">Change password</string>
-    <string name="new_password">New Password</string>
-    <string name="old_password">Old Password</string>
     <string name="confirm">Confirm</string>
+    <string name="change_password_error">Password has not been changed due to an error</string>
 </resources>

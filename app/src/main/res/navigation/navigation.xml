@@ -63,11 +63,6 @@
         tools:layout="@layout/activity_new_post" />
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="com.example.practice_demo.password.ui.password.PasswordFragment"
-        android:label="@string/change_password"
-        tools:layout="@layout/fragment_password" >
-        <action
-            android:id="@+id/action_passwordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-    </fragment>
+        android:name="com.example.practice_demo.change_password.change_password.PasswordFragment"
+        android:label="PasswordFragment" />
 </navigation>
