@@ -1,5 +1,7 @@
 package com.example.practice_demo.network
 
+import com.example.practice_demo.activity.newPost.data.model.NewPostRequest
+import com.example.practice_demo.activity.newPost.data.model.NewPostResponse
 import com.example.practice_demo.helper.Constants
 import com.example.practice_demo.login.data.model.RefreshTokenRequest
 import com.example.practice_demo.login.data.model.UserLoginRequest
@@ -79,10 +81,17 @@ interface ApiService {
 
     @Multipart
     @POST("upload.php")
-    suspend fun changePhotoService(
+    suspend fun changePhotoService( 
         @Part("data") body: ChangePhotoRequest,
         @Part file: MultipartBody.Part
     ): ChangePhotoResponse
+
+    @Multipart
+    @POST("post.php")
+    suspend fun createPostService(
+        @Part("data") body: NewPostRequest,
+        @Part file: MultipartBody.Part
+    ): NewPostResponse
 }
 
 object Api {

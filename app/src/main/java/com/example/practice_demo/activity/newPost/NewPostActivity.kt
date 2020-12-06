@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.practice_demo.R
 import com.example.practice_demo.helper.Constants.Companion.FILE_NAME
 import com.example.practice_demo.helper.Constants.Companion.MAX_VIDEO_SIZE
@@ -21,14 +23,24 @@ import com.example.practice_demo.helper.Constants.Companion.PICK_VIDEO_CODE
 import com.example.practice_demo.helper.Constants.Companion.RECORD_REQUEST_CODE
 import com.example.practice_demo.helper.Constants.Companion.REQUEST_VIDEO_CAPTURE
 import com.example.practice_demo.helper.FileUtils
+import com.example.practice_demo.helper.SaveSharedPreference
+import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.profile.ui.ProfileViewModel
+import com.example.practice_demo.profile.ui.ProfileViewModelFactory
 import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
 import java.io.File
+import java.io.IOException
 
 private lateinit var videoFile: File
+private var videoFilePath: String = ""
+private var videoFileName: String = ""
 
 class NewPostActivity : AppCompatActivity() {
     private var kohii: Kohii? = null
+    lateinit var newPostViewModel: NewPostViewModel
+    lateinit var user: UserLoginResponse
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +52,30 @@ class NewPostActivity : AppCompatActivity() {
         kohii = Kohii[this]
         kohii?.register(this)?.addBucket(videoExoFrame)
         btnSubmit.isEnabled = false
+
+//        user = activity?.let { activity ->
+//
+//            SaveSharedPreference.getUser(activity)
+//                ?: throw IOException("User not found")
+//        }!!
+
+        user = SaveSharedPreference.getUser(this)!!
+
+        newPostViewModel = ViewModelProvider(this, NewPostViewModelFactory(user))
+            .get(NewPostViewModel::class.java)
+
+        newPostViewModel.createdNewPostFlag.observe(this) { addedPost ->
+            if (addedPost) {
+                Toast.makeText(this, getString(R.string.new_post_added), Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+
+//        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
+//            // update UI po zmene fotky)
+//            // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
+//            changeImage(hasPhoto)
+//        })
     }
 
     private fun setupPermissions() {
@@ -65,7 +101,7 @@ class NewPostActivity : AppCompatActivity() {
             if (takeVideoIntent.resolveActivity(this.packageManager) != null) {
                 startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
             } else {
-                Toast.makeText(this, "Unable to open camera", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.camera_open_fail), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -84,6 +120,7 @@ class NewPostActivity : AppCompatActivity() {
     private fun setOnClickListenerSubmit() {
         btnSubmit.setOnClickListener{
             Log.i("Submit: ", "function called")
+            newPostViewModel.createNewPost(videoFilePath, videoFileName)
         }
     }
 
@@ -116,11 +153,13 @@ class NewPostActivity : AppCompatActivity() {
                     if (!checkSize(videoFile.length())){
                         return
                     }
-                    videoToView = Uri.parse(videoFile.absolutePath)
+                    videoFilePath = videoFile.absolutePath
+                    videoFileName = videoFile.name
+                    videoToView = Uri.parse(videoFilePath)
                 }
                 PICK_VIDEO_CODE -> {
-                    val path = FileUtils.getPath(this, data?.data)
-                    var size = File(path).length()
+                    videoFilePath = FileUtils.getPath(this, data?.data)
+                    var size = File(videoFilePath).length()
                     if (!checkSize(size)){
                         return
                     }
