@@ -14,7 +14,7 @@ import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.wall.data.model.PostDatabase
-import com.example.practice_demo.wall.data.model.PostItemRecycler
+import com.example.practice_demo.wall.data.model.PostItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kohii.v1.exoplayer.Kohii
 import java.io.IOException
@@ -96,18 +96,18 @@ class WallFragment : Fragment() {
         val adapter = PostAdapter(
             kohii,
             this,
-            object: DiffUtil.ItemCallback<PostItemRecycler>() {
+            object: DiffUtil.ItemCallback<PostItem>() {
                 override fun areItemsTheSame(
-                    oldItem: PostItemRecycler,
-                    newItem: PostItemRecycler
+                    oldItem: PostItem,
+                    newItem: PostItem
                 ): Boolean =
                     oldItem == newItem
 
                 override fun areContentsTheSame(
-                    oldItem: PostItemRecycler,
-                    newItem: PostItemRecycler
+                    oldItem: PostItem,
+                    newItem: PostItem
                 ): Boolean =
-                    oldItem.index == newItem.index
+                    oldItem.postid == newItem.postid
             }
         )
 
@@ -115,13 +115,7 @@ class WallFragment : Fragment() {
 
         // Observujeme dotiahnutie postov do viewmodelu (refresh alebo zapnutie wallfragmentu)
         wallViewModel.postsList.observe(viewLifecycleOwner, { postsList ->
-            val newLists = arrayListOf<PostItemRecycler>()
-
-            for ((index, post) in postsList.withIndex()) {
-                newLists.add(PostItemRecycler(post, index))
-            }
-
-            adapter.submitList(newLists)
+            adapter.submitList(postsList)
         })
 
         // Snap helper zabezpeci, ze pri scrollnuti nas rovno hodi na dalsi prispevok (Parametrom

@@ -32,11 +32,3 @@ data class PostItem(
             return now.format(formatter.parse(created))
         }
 }
-
-/**
- * Wrapper pre recyclerview
- */
-data class PostItemRecycler(
-    val postItem: PostItem,
-    var index: Int = -1
-)

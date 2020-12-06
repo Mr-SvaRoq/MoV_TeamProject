@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.PostViewBinding
 import com.example.practice_demo.helper.Constants
-import com.example.practice_demo.wall.data.model.PostItemRecycler
+import com.example.practice_demo.wall.data.model.PostItem
 import com.google.android.exoplayer2.ui.PlayerView
 import kohii.v1.core.Common
 import kohii.v1.core.Playback
@@ -28,8 +28,8 @@ class PostViewHolder(val binding: PostViewBinding) : RecyclerView.ViewHolder(bin
 class PostAdapter(
     private val kohii: Kohii,
     private val fragment: Fragment,
-    diffCallback: DiffUtil.ItemCallback<PostItemRecycler>
-) : ListAdapter<PostItemRecycler, PostViewHolder>(diffCallback) {
+    diffCallback: DiffUtil.ItemCallback<PostItem>
+) : ListAdapter<PostItem, PostViewHolder>(diffCallback) {
 
     // Kohii si pri nacitani predoslych recycler itemov nedokazal zapamatat ktore
     // videa sme nechali stopnute a ktore nie. Na to sluzi tato mapa
@@ -37,8 +37,8 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val item = getItem(position) ?: return
-        kohii.setUp(Constants.Api.MEDIA_URL + item.postItem.videourl) {
-            tag = "${Constants.Api.MEDIA_URL + item.postItem.videourl}+${position}"
+        kohii.setUp(Constants.Api.MEDIA_URL + item.videourl) {
+            tag = "${Constants.Api.MEDIA_URL + item.videourl}+${position}"
             preload = true
             repeatMode = Common.REPEAT_MODE_ONE
             controller = object : Playback.Controller {
@@ -59,16 +59,16 @@ class PostAdapter(
 
 
         // Ak ma autor profilovku, nacitame (Inak defaultny obrazok)
-        if (item.postItem.profile != "") {
+        if (item.profile != "") {
             Glide.with(fragment)
-                .load(Constants.Api.MEDIA_URL + item.postItem.profile)
+                .load(Constants.Api.MEDIA_URL + item.profile)
                 .apply(RequestOptions.skipMemoryCacheOf(true))
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(holder.binding.profilePicture)
         }
 
         // Setneme binding model
-        holder.binding.dataModel = item.postItem
+        holder.binding.dataModel = item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
