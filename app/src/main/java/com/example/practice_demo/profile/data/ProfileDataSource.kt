@@ -1,6 +1,5 @@
 package com.example.practice_demo.profile.data
 
-import android.net.Uri
 import com.example.practice_demo.helper.Result
 import com.example.practice_demo.network.Api
 import com.example.practice_demo.profile.data.model.ChangePhotoRequest

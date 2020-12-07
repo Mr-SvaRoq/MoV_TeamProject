@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
 import com.example.practice_demo.helper.SaveSharedPreference
-import com.example.practice_demo.wall.data.model.PostItemRecycler
+import com.example.practice_demo.wall.data.model.PostDatabase
+import com.example.practice_demo.wall.data.model.PostItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kohii.v1.exoplayer.Kohii
 import java.io.IOException
 
 class WallFragment : Fragment() {
-    lateinit var binding: FragmentWallBinding
-    lateinit var wallViewModel: WallViewModel
+    private lateinit var binding: FragmentWallBinding
+    private lateinit var wallViewModel: WallViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,11 +35,21 @@ class WallFragment : Fragment() {
             val user = SaveSharedPreference.getUser(activity)
                 ?: throw IOException("User not found")
 
-            wallViewModel = ViewModelProvider(this, WallViewModelFactory(user))
+            val localDataSource = PostDatabase.getInstance(
+                activity.application
+            ).postDatabaseDao
+
+            wallViewModel = ViewModelProvider(this, WallViewModelFactory(user, localDataSource))
                 .get(WallViewModel::class.java)
         }
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_wall, container, false)
+
+        wallViewModel.unauthorisedFlag.observe(viewLifecycleOwner, {isUnauthorised ->
+            if (isUnauthorised) {
+                logout()
+            }
+        })
 
         setupRecyclerView()
 
@@ -84,18 +95,18 @@ class WallFragment : Fragment() {
         val adapter = PostAdapter(
             kohii,
             this,
-            object: DiffUtil.ItemCallback<PostItemRecycler>() {
+            object: DiffUtil.ItemCallback<PostItem>() {
                 override fun areItemsTheSame(
-                    oldItem: PostItemRecycler,
-                    newItem: PostItemRecycler
+                    oldItem: PostItem,
+                    newItem: PostItem
                 ): Boolean =
                     oldItem == newItem
 
                 override fun areContentsTheSame(
-                    oldItem: PostItemRecycler,
-                    newItem: PostItemRecycler
+                    oldItem: PostItem,
+                    newItem: PostItem
                 ): Boolean =
-                    oldItem.index == newItem.index
+                    oldItem.postid == newItem.postid
             }
         )
 
@@ -103,14 +114,7 @@ class WallFragment : Fragment() {
 
         // Observujeme dotiahnutie postov do viewmodelu (refresh alebo zapnutie wallfragmentu)
         wallViewModel.postsList.observe(viewLifecycleOwner, { postsList ->
-            //TODO(toto je len pre debug, prvy nahrany prispevok zopakuje 10x
-            // pokial budeme mat nahranych viac prispevkov, moze sa dat do prdele)
-            val newLists = arrayListOf<PostItemRecycler>()
-            for (x in 0..10) {
-                newLists.add(PostItemRecycler(postsList[0], x))
-            }
-
-            adapter.submitList(newLists)
+            adapter.submitList(postsList)
         })
 
         // Snap helper zabezpeci, ze pri scrollnuti nas rovno hodi na dalsi prispevok (Parametrom
@@ -123,5 +127,10 @@ class WallFragment : Fragment() {
 
         // Nafeeduj nastenku
         wallViewModel.feedWall()
+    }
+
+    private fun logout() {
+        activity?.let { SaveSharedPreference.clearUsername(it) }
+        findNavController().navigate(WallFragmentDirections.actionWallFragmentToLoginFragment())
     }
 }

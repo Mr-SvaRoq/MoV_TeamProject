@@ -1,6 +1,6 @@
 package com.example.practice_demo.signup.data.model
 
-class UserSignupRequest (
+data class UserSignupRequest (
     val action: String,
     val apikey: String,
     val email: String,

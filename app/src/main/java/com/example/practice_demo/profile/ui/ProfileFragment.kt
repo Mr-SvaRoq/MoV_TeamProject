@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -35,7 +36,7 @@ private lateinit var binding: FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
-    lateinit var profileViewModel: ProfileViewModel
+    private lateinit var profileViewModel: ProfileViewModel
     lateinit var user: UserLoginResponse
 
     override fun onCreateView(
@@ -55,7 +56,7 @@ class ProfileFragment : Fragment() {
         profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
             .get(ProfileViewModel::class.java)
 
-        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
+        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer { hasPhoto ->
             // update UI po zmene fotky)
             // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
             changeImage(hasPhoto)
@@ -74,6 +75,7 @@ class ProfileFragment : Fragment() {
                     .load(Constants.Api.MEDIA_URL + user.profile)
                     .apply(RequestOptions.skipMemoryCacheOf(true))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .placeholder(R.drawable.user)
                     .fallback(R.drawable.user)
                     .into(profileImg)
             }
@@ -143,7 +145,11 @@ class ProfileFragment : Fragment() {
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 )
             ) {
-                showPermissionDeniedDialog()
+                ActivityCompat.requestPermissions(
+                    context as Activity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    1
+                )
             } else {
                 ActivityCompat.requestPermissions(
                     context as Activity,

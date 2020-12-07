@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.practice_demo.helper.Result
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.password.data.PasswordRepository
-import com.example.practice_demo.profile.data.ProfileRepository
 import kotlinx.coroutines.launch
 
 class PasswordViewModel (
