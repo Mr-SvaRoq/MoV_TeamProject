@@ -36,7 +36,7 @@ private lateinit var binding: FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
     private lateinit var profileImg: CircleImageView
-    lateinit var profileViewModel: ProfileViewModel
+    private lateinit var profileViewModel: ProfileViewModel
     lateinit var user: UserLoginResponse
 
     override fun onCreateView(

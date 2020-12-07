@@ -34,7 +34,6 @@ enum class ServiceAction(val action: String) {
     REFRESH_TOKEN("refreshToken"),
     CHANGE_PASSWORD("password"),
     CLEAR_PHOTO("clearPhoto"),
-    CHANGE_PHOTO("changePhoto"),
     GET_POSTS("posts"),
     USER_EXISTS("exists"),
     DELETE_POST("deletePost"),

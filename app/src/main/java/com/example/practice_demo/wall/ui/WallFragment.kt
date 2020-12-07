@@ -20,8 +20,8 @@ import kohii.v1.exoplayer.Kohii
 import java.io.IOException
 
 class WallFragment : Fragment() {
-    lateinit var binding: FragmentWallBinding
-    lateinit var wallViewModel: WallViewModel
+    private lateinit var binding: FragmentWallBinding
+    private lateinit var wallViewModel: WallViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

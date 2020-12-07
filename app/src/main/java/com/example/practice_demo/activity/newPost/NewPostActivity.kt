@@ -120,7 +120,7 @@ class NewPostActivity : AppCompatActivity() {
                 }
                 PICK_VIDEO_CODE -> {
                     val path = FileUtils.getPath(this, data?.data)
-                    var size = File(path).length()
+                    val size = File(path).length()
                     if (!checkSize(size)){
                         return
                     }
@@ -145,7 +145,7 @@ class NewPostActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             RECORD_REQUEST_CODE -> {
-                var accessToNewPost: Boolean = false;
+                var accessToNewPost = false
                 grantResults.forEachIndexed {index, element ->
                     if (grantResults.isEmpty() || element != PackageManager.PERMISSION_GRANTED) {
                         Log.i(permissions[index], "Permission has been denied by user")

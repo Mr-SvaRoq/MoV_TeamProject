@@ -36,19 +36,19 @@ class SaveSharedPreference {
         /**
          * Ziskaj ulozene data
          */
-        fun getUser(ctx: Context): UserLoginResponse? {
-            var user: UserLoginResponse? = null
-
+        fun getUser(ctx: Context): UserLoginResponse? =
             try {
+                val user: UserLoginResponse?
+
                 getSharedPreferences(ctx)?.getString(PREF_USER_NAME, "").let {
                     user = gson.fromJson(it, UserLoginResponse::class.java)
                 }
 
-                return user
+                user
             } catch (e: JsonParseException) {
-                return null
+                null
             }
-        }
+
 
         /**
          * Over, ci je user prihlaseny
