@@ -21,7 +21,6 @@ class NewPostViewModel(private val userInstance: UserLoginResponse, private val 
         viewModelScope.launch {
             //TODO newPostRepository.createNewPost
             val responseFromApi = postRepository.createPost(filePath, fileName, userInstance.token)
-//            val result = profileRepository.changePhoto(filePath, userInstance.token)
 
             Log.e("TAG", responseFromApi.toString())
 
@@ -30,7 +29,6 @@ class NewPostViewModel(private val userInstance: UserLoginResponse, private val 
 
             //TODO notification
             if (success) {
-//                 Upozornime observer, ze doslo k zmene
                 _createdNewPost.value = success
             }
         }
