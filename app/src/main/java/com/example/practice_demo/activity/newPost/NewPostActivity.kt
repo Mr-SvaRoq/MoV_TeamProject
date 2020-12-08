@@ -25,12 +25,10 @@ import com.example.practice_demo.helper.Constants.Companion.REQUEST_VIDEO_CAPTUR
 import com.example.practice_demo.helper.FileUtils
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.login.data.model.UserLoginResponse
-import com.example.practice_demo.profile.ui.ProfileViewModel
-import com.example.practice_demo.profile.ui.ProfileViewModelFactory
 import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
 import java.io.File
-import java.io.IOException
+import java.util.*
 
 private lateinit var videoFile: File
 private var videoFilePath: String = ""
@@ -53,12 +51,6 @@ class NewPostActivity : AppCompatActivity() {
         kohii?.register(this)?.addBucket(videoExoFrame)
         btnSubmit.isEnabled = false
 
-//        user = activity?.let { activity ->
-//
-//            SaveSharedPreference.getUser(activity)
-//                ?: throw IOException("User not found")
-//        }!!
-
         user = SaveSharedPreference.getUser(this)!!
 
         newPostViewModel = ViewModelProvider(this, NewPostViewModelFactory(user))
@@ -70,12 +62,6 @@ class NewPostActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-//        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
-//            // update UI po zmene fotky)
-//            // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
-//            changeImage(hasPhoto)
-//        })
     }
 
     private fun setupPermissions() {
@@ -144,6 +130,11 @@ class NewPostActivity : AppCompatActivity() {
         return true
     }
 
+    private fun generateName(): String {
+        val uuid = UUID.randomUUID()
+        return "$FILE_NAME$uuid.mp4"
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //check if successfully take video
         if (resultCode == Activity.RESULT_OK) {
@@ -159,7 +150,8 @@ class NewPostActivity : AppCompatActivity() {
                 }
                 PICK_VIDEO_CODE -> {
                     videoFilePath = FileUtils.getPath(this, data?.data)
-                    var size = File(videoFilePath).length()
+                    videoFileName = generateName()
+                    val size = File(videoFilePath).length()
                     if (!checkSize(size)){
                         return
                     }
