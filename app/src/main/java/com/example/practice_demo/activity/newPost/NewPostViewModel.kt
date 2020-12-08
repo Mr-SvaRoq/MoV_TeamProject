@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.practice_demo.activity.newPost.data.PostRepository
-import com.example.practice_demo.activity.newPost.data.model.NewPostRequest
 import com.example.practice_demo.login.data.model.UserLoginResponse
 import kotlinx.coroutines.launch
 import com.example.practice_demo.helper.Result

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [PostItem::class], version = 2, exportSchema = false
+    entities = [PostItem::class], version = 3, exportSchema = false
 )
 abstract class PostDatabase: RoomDatabase() {
     abstract val postDatabaseDao: PostDatabaseDao

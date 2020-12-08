@@ -10,12 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.FragmentWallBinding
 import com.example.practice_demo.helper.SaveSharedPreference
 import com.example.practice_demo.wall.data.model.PostDatabase
 import com.example.practice_demo.wall.data.model.PostItem
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kohii.v1.exoplayer.Kohii
 import java.io.IOException
 
@@ -62,16 +62,21 @@ class WallFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val actionButton = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-
-        actionButton.setOnClickListener {
-            view.findNavController().navigate(R.id.action_wallFragment_to_newPostActivity)
+        binding.floatingActionButton.setOnClickListener {
+            view.findNavController().navigate(WallFragmentDirections.actionWallFragmentToNewPostActivity())
         }
+    }
+
+    /**
+     * On resume vzdy dotiahneme cerstve data
+     */
+    override fun onResume() {
+        super.onResume()
+        wallViewModel.feedWall()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-
         inflater.inflate(R.menu.menu, menu)
     }
 
@@ -125,8 +130,30 @@ class WallFragment : Fragment() {
         binding.postList.layoutManager = layoutManager
         snapHelper.attachToRecyclerView(binding.postList)
 
-        // Nafeeduj nastenku
-        wallViewModel.feedWall()
+        setupListChangeEvents(adapter, layoutManager)
+    }
+
+    private fun setupListChangeEvents(adapter: PostAdapter, manager: RecyclerView.LayoutManager) {
+        adapter.registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                manager.scrollToPosition(0)
+            }
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                manager.scrollToPosition(0)
+            }
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                manager.scrollToPosition(0)
+            }
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                manager.scrollToPosition(0)
+            }
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                manager.scrollToPosition(0)
+            }
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+                manager.scrollToPosition(0)
+            }
+        })
     }
 
     private fun logout() {
