@@ -42,4 +42,5 @@
     <string name="post_delete_toast">Post has been permanently removed</string>
     <string name="delete_post_dialog_title">Delete post</string>
     <string name="post_delete_fail_toast">Deleting post failed, try again later</string>
+    <string name="new_post_label">Add post</string>
 </resources>
