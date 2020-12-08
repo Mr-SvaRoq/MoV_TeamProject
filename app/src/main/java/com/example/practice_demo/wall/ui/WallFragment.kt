@@ -64,6 +64,12 @@ class WallFragment : Fragment() {
             }
         })
 
+        wallViewModel.networkNotFoundFlag.observe(viewLifecycleOwner, {networkErr: Boolean? ->
+            if (networkErr != null && networkErr) {
+                Toast.makeText(context, getString(R.string.network_error), Toast.LENGTH_LONG).show()
+            }
+        })
+
         setupRecyclerView()
 
         // Specify the current activity as the lifecycle owner of the binding.

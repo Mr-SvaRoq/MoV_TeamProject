@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.practice_demo.R
 import com.example.practice_demo.helper.Result
 import com.example.practice_demo.login.data.model.UserLoginResponse
-import com.example.practice_demo.login.ui.login.LoginResult
 import com.example.practice_demo.profile.data.ProfileRepository
 import kotlinx.coroutines.launch
 

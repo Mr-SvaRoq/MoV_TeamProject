@@ -44,4 +44,5 @@
     <string name="post_delete_fail_toast">Deleting post failed, try again later</string>
     <string name="new_post_label">Add post</string>
     <string name="record_video">Record Video</string>
+    <string name="network_error">Network not found</string>
 </resources>

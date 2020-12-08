@@ -10,6 +10,7 @@ import com.example.practice_demo.wall.data.WallRepository
 import com.example.practice_demo.wall.data.model.PostItem
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.net.UnknownHostException
 
 class WallViewModel(
     private val wallRepository: WallRepository,
@@ -25,6 +26,9 @@ class WallViewModel(
 
     private val _unauthorisedFlag = MutableLiveData<Boolean>()
     val unauthorisedFlag: LiveData<Boolean> = _unauthorisedFlag
+
+    private val _networkNotFoundFlag = MutableLiveData<Boolean>()
+    val networkNotFoundFlag: LiveData<Boolean> = _networkNotFoundFlag
 
     fun deletePost(postId: Int) {
         viewModelScope.launch {
@@ -55,6 +59,9 @@ class WallViewModel(
                 if (e.code() == 401) {
                     _unauthorisedFlag.value = true
                 }
+            } catch (networkExc: UnknownHostException) {
+                _networkNotFoundFlag.value = true
+                _networkNotFoundFlag.value = null
             }
         }
     }
