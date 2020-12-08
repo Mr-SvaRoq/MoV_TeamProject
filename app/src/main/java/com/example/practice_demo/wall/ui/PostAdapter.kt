@@ -62,13 +62,13 @@ class PostAdapter(
 
 
         // Ak ma autor profilovku, nacitame (Inak defaultny obrazok)
-        if (item.profile != "") {
-            Glide.with(fragment)
-                .load(Constants.Api.MEDIA_URL + item.profile)
-                .apply(RequestOptions.skipMemoryCacheOf(true))
-                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                .into(holder.binding.profilePicture)
-        }
+        Glide.with(fragment)
+            .load(Constants.Api.MEDIA_URL + item.profile)
+            .apply(RequestOptions.skipMemoryCacheOf(true))
+            .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+            .placeholder(R.drawable.user)
+            .fallback(R.drawable.user)
+            .into(holder.binding.profilePicture)
 
         // User je vlastnik daneho postu
         val isOwner = item.username == userInstance.username

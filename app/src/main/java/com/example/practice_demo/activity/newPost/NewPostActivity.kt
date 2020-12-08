@@ -42,6 +42,7 @@ class NewPostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTitle(R.string.new_post_label)
         setContentView(R.layout.activity_new_post)
         setupPermissions()
         setOnClickListenerMakeVideo()
