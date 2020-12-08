@@ -32,29 +32,34 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnMakeVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/new_post_make_video" />
+                    android:layout_marginEnd="50dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@drawable/round_videocam_black_18dp"
+                    android:contentDescription="@string/record_video" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnUploadVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/new_post_upload_video" />
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@drawable/round_perm_media_black_18dp"
+                    android:contentDescription="@string/new_post_upload_video" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btnSubmit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/new_post_submit" />
+                    android:layout_marginStart="50dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:src="@drawable/round_publish_black_18dp"
+                    android:contentDescription="@string/new_post_submit" />
 
             </LinearLayout>
 
