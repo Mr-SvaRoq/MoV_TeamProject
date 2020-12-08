@@ -51,12 +51,6 @@ class NewPostActivity : AppCompatActivity() {
         btnSubmit.isEnabled = false
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-//        user = activity?.let { activity ->
-//
-//            SaveSharedPreference.getUser(activity)
-//                ?: throw IOException("User not found")
-//        }!!
-
         user = SaveSharedPreference.getUser(this)!!
 
         newPostViewModel = ViewModelProvider(this, NewPostViewModelFactory(user))
@@ -68,12 +62,6 @@ class NewPostActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-//        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, { hasPhoto ->
-//            // update UI po zmene fotky)
-//            // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
-//            changeImage(hasPhoto)
-//        })
     }
 
     private fun setupPermissions() {
@@ -84,10 +72,7 @@ class NewPostActivity : AppCompatActivity() {
         val permissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
 
         if (permissionExternalStorage != PackageManager.PERMISSION_GRANTED || permissionCamera != PackageManager.PERMISSION_GRANTED) {
-            Log.i(
-                "Permission: ",
-                "Permission to access external storage or camera is denied -> making request"
-            )
+            Log.i("Permission: ","Permission to access external storage or camera is denied -> making request")
             makeRequest()
         }
     }
@@ -180,11 +165,6 @@ class NewPostActivity : AppCompatActivity() {
             if (videoToView != null) {
                 kohii?.setUp(videoToView)?.bind(videoExoPlayer)
                 btnSubmit.isEnabled = true
-//                {
-//                    preload = true
-//                    repeatMode = Common.REPEAT_MODE_ONE
-//                }
-
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -209,12 +189,8 @@ class NewPostActivity : AppCompatActivity() {
                     }
 
                     when (index) {
-                        0 -> {
-                            btnUploadVideo.isEnabled = element == 0
-                        }
-                        1 -> {
-                            btnMakeVideo.isEnabled = element == 0
-                        }
+                        0 -> {btnUploadVideo.isEnabled = element == 0}
+                        1 -> {btnMakeVideo.isEnabled = element == 0}
                     }
                 }
 
