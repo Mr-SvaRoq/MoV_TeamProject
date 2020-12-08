@@ -1,8 +1,9 @@
 # Mobilné výpočty FEI 2020/2021 Zimný semseter - TEAM 6
 
-![Alt text](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png "App")
-
 Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s možnosťou pridania video príspevkov.
+
+## 8mbFHD
+![Alt text](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png "8mbFHD")
 
 ## Developerský tím
 - Hlatký, Radoslav
@@ -13,3 +14,16 @@ Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s 
 ## Potrebné linky
 - [Trello](https://trello.com/b/ixg5c3I8/mov) -> pre developerov
 - [Mobilné výpočty](http://android.mpage.sk/) -> stránka predmetu 
+
+## Funkcionalita
+- Prihlásenie (Log in)
+- Založenie účtu (Sign me)
+- Prehľadavanie príspevkov (Wall)
+- Profil 
+    - Zmena hesla (Change password)
+    - Odhlásenie (Log out)
+    - Zmena profilovej fotky
+    - Prehľad osobných údajov
+- Pridanie nového videa
+    - Nahratie videa z kamery
+    - Nahranie videa zo súború
