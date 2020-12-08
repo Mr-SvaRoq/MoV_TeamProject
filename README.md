@@ -19,6 +19,7 @@ Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s 
 - Prihlásenie (Log in)
 - Založenie účtu (Sign me)
 - Prehľadavanie príspevkov (Wall)
+    - Vymazanie vlastných príspevkov
 - Profil 
     - Zmena hesla (Change password)
     - Odhlásenie (Log out)
