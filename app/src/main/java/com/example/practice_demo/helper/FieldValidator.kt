@@ -14,7 +14,7 @@ class FieldValidator {
 
         // A placeholder username validation check
         fun isUsernameValid(username: String): Boolean {
-            return minLength(username)
+            return minLength(username, minLength = 4)
         }
 
         // A placeholder password validation check

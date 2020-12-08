@@ -126,7 +126,7 @@ class SignupFragment : Fragment() {
         passwordEditText.addTextChangedListener(afterTextChangedListener)
 
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_DONE && signupButton.isEnabled) {
                 signupViewModel.signup(
                     emailEditText.text.toString(),
                     usernameEditText.text.toString(),
