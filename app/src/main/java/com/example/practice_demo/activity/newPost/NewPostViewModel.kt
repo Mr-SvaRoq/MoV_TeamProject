@@ -18,15 +18,15 @@ class NewPostViewModel(private val userInstance: UserLoginResponse, private val 
 
     fun createNewPost(filePath: String, fileName: String ) {
         viewModelScope.launch {
-            //TODO newPostRepository.createNewPost
+            //post repo
             val responseFromApi = postRepository.createPost(filePath, fileName, userInstance.token)
 
             Log.e("TAG", responseFromApi.toString())
 
-            //TODO get success value
+            //resolve response
             val success = responseFromApi is Result.Success && responseFromApi.data.status == "success"
 
-            //TODO notification
+            //send resolved response
             if (success) {
                 _createdNewPost.value = success
             }
