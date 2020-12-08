@@ -28,6 +28,7 @@ import com.example.practice_demo.login.data.model.UserLoginResponse
 import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
 import java.io.File
+import java.util.*
 
 private lateinit var videoFile: File
 private var videoFilePath: String = ""
@@ -140,6 +141,11 @@ class NewPostActivity : AppCompatActivity() {
         return true
     }
 
+    private fun generateName(): String {
+        val uuid = UUID.randomUUID()
+        return "$FILE_NAME$uuid.mp4"
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //check if successfully take video
         if (resultCode == Activity.RESULT_OK) {
@@ -155,7 +161,8 @@ class NewPostActivity : AppCompatActivity() {
                 }
                 PICK_VIDEO_CODE -> {
                     videoFilePath = FileUtils.getPath(this, data?.data)
-                    var size = File(videoFilePath).length()
+                    videoFileName = generateName()
+                    val size = File(videoFilePath).length()
                     if (!checkSize(size)) {
                         return
                     }
