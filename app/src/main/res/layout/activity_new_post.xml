@@ -38,8 +38,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginEnd="50dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/transparentWhite"
                     android:src="@drawable/round_videocam_black_18dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_round_corner"
                     android:contentDescription="@string/record_video" />
 
                 <ImageButton
@@ -47,8 +49,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/transparentWhite"
+                    android:padding="10dp"
                     android:src="@drawable/round_perm_media_black_18dp"
+                    android:background="@drawable/button_round_corner"
                     android:contentDescription="@string/new_post_upload_video" />
 
                 <ImageButton
@@ -57,8 +61,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="50dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="@color/transparentWhite"
+                    android:padding="10dp"
                     android:src="@drawable/round_publish_black_18dp"
+                    android:background="@drawable/button_round_corner"
                     android:contentDescription="@string/new_post_submit" />
 
             </LinearLayout>
