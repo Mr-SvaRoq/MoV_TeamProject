@@ -28,6 +28,7 @@ import com.example.practice_demo.login.data.model.UserLoginResponse
 import kohii.v1.exoplayer.Kohii
 import kotlinx.android.synthetic.main.activity_new_post.*
 import java.io.File
+import java.util.*
 
 private lateinit var videoFile: File
 private var videoFilePath: String = ""
@@ -49,7 +50,7 @@ class NewPostActivity : AppCompatActivity() {
         kohii = Kohii[this]
         kohii?.register(this)?.addBucket(videoExoFrame)
         btnSubmit.isEnabled = false
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 //        user = activity?.let { activity ->
 //
 //            SaveSharedPreference.getUser(activity)
@@ -76,17 +77,11 @@ class NewPostActivity : AppCompatActivity() {
     }
 
     private fun setupPermissions() {
-        val permissionExternalStorage = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
+        val permissionExternalStorage = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
         val permissionCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
 
         if (permissionExternalStorage != PackageManager.PERMISSION_GRANTED || permissionCamera != PackageManager.PERMISSION_GRANTED) {
-            Log.i(
-                "Permission: ",
-                "Permission to access external storage or camera is denied -> making request"
-            )
+            Log.i("Permission: ", "Permission to access external storage or camera is denied -> making request")
             makeRequest()
         }
     }
@@ -96,11 +91,7 @@ class NewPostActivity : AppCompatActivity() {
             val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
 
             videoFile = getVideoFile(FILE_NAME)
-            val fileProvider = FileProvider.getUriForFile(
-                this,
-                "com.example.practice_demo.activity.fileprovider",
-                videoFile
-            )
+            val fileProvider = FileProvider.getUriForFile(this, "com.example.practice_demo.activity.fileprovider", videoFile)
             //Add extended data to the intent.
             takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
 
@@ -132,11 +123,8 @@ class NewPostActivity : AppCompatActivity() {
     }
 
     private fun makeRequest() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-            RECORD_REQUEST_CODE
-        )
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA), RECORD_REQUEST_CODE)
     }
 
     private fun getVideoFile(fileName: String): File {
@@ -160,7 +148,7 @@ class NewPostActivity : AppCompatActivity() {
             var videoToView: Uri? = null
             when(requestCode) {
                 REQUEST_VIDEO_CAPTURE -> {
-                    if (!checkSize(videoFile.length())) {
+                    if (!checkSize(videoFile.length())){
                         return
                     }
                     videoFilePath = videoFile.absolutePath
@@ -170,7 +158,7 @@ class NewPostActivity : AppCompatActivity() {
                 PICK_VIDEO_CODE -> {
                     videoFilePath = FileUtils.getPath(this, data?.data)
                     var size = File(videoFilePath).length()
-                    if (!checkSize(size)) {
+                    if (!checkSize(size)){
                         return
                     }
                     videoToView = data?.data
@@ -190,16 +178,12 @@ class NewPostActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult( requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             RECORD_REQUEST_CODE -> {
                 var accessToNewPost: Boolean = false;
-                grantResults.forEachIndexed { index, element ->
+                grantResults.forEachIndexed {index, element ->
                     if (grantResults.isEmpty() || element != PackageManager.PERMISSION_GRANTED) {
                         Log.i(permissions[index], "Permission has been denied by user")
                     } else {
@@ -208,24 +192,16 @@ class NewPostActivity : AppCompatActivity() {
                     }
 
                     when (index) {
-                        0 -> {
-                            btnUploadVideo.isEnabled = element == 0
-                        }
-                        1 -> {
-                            btnMakeVideo.isEnabled = element == 0
-                        }
+                        0 -> {btnUploadVideo.isEnabled = element == 0}
+                        1 -> {btnMakeVideo.isEnabled = element == 0}
                     }
                 }
 
-                if (!accessToNewPost) {
+                if (!accessToNewPost){
                     btnSubmit.isEnabled = false
                     finish()
                 }
             }
         }
-    }
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 }
