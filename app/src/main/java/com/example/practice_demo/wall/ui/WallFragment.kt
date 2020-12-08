@@ -2,6 +2,7 @@ package com.example.practice_demo.wall.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -51,6 +52,15 @@ class WallFragment : Fragment() {
             }
         })
 
+        wallViewModel.postDeletedFlag.observe(viewLifecycleOwner, {isDeleted ->
+            if (isDeleted) {
+                wallViewModel.feedWall()
+                Toast.makeText(context, getString(R.string.post_delete_toast), Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, getString(R.string.post_delete_fail_toast), Toast.LENGTH_LONG).show()
+            }
+        })
+
         setupRecyclerView()
 
         // Specify the current activity as the lifecycle owner of the binding.
@@ -97,7 +107,10 @@ class WallFragment : Fragment() {
         val kohii = Kohii[this]
         kohii.register(this).addBucket(binding.postList)
 
+        val userInstance =  SaveSharedPreference.getUser(requireContext()) ?: throw RuntimeException("User not found")
+
         val adapter = PostAdapter(
+            userInstance,
             kohii,
             this,
             object: DiffUtil.ItemCallback<PostItem>() {
@@ -159,5 +172,9 @@ class WallFragment : Fragment() {
     private fun logout() {
         activity?.let { SaveSharedPreference.clearUsername(it) }
         findNavController().navigate(WallFragmentDirections.actionWallFragmentToLoginFragment())
+    }
+
+    fun deletePost(postId: Int) {
+        wallViewModel.deletePost(postId)
     }
 }

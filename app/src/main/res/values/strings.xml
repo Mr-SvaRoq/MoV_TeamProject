@@ -37,4 +37,9 @@
     <string name="new_password">New Password</string>
     <string name="old_password">Old Password</string>
     <string name="confirm">Confirm</string>
+    <string name="delete_post_dialog">Are you sure you want to remove this post?</string>
+    <string name="yes">yes</string>
+    <string name="post_delete_toast">Post has been permanently removed</string>
+    <string name="delete_post_dialog_title">Delete post</string>
+    <string name="post_delete_fail_toast">Deleting post failed, try again later</string>
 </resources>

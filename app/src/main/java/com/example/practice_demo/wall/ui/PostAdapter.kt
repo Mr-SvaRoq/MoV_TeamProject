@@ -1,5 +1,6 @@
 package com.example.practice_demo.wall.ui
 
+import android.app.AlertDialog
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.practice_demo.R
 import com.example.practice_demo.databinding.PostViewBinding
 import com.example.practice_demo.helper.Constants
+import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.wall.data.model.PostItem
 import com.google.android.exoplayer2.ui.PlayerView
 import kohii.v1.core.Common
@@ -26,6 +28,7 @@ class PostViewHolder(val binding: PostViewBinding) : RecyclerView.ViewHolder(bin
 }
 
 class PostAdapter(
+    private val userInstance: UserLoginResponse,
     private val kohii: Kohii,
     private val fragment: Fragment,
     diffCallback: DiffUtil.ItemCallback<PostItem>
@@ -65,6 +68,17 @@ class PostAdapter(
                 .apply(RequestOptions.skipMemoryCacheOf(true))
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .into(holder.binding.profilePicture)
+        }
+
+        // User je vlastnik daneho postu
+        val isOwner = item.username == userInstance.username
+
+        holder.binding.allowDelete = if (isOwner) View.VISIBLE else View.GONE
+
+        if (isOwner) {
+            holder.binding.deletePost.setOnClickListener {
+                promptPostDelete(item.postid)
+            }
         }
 
         // Setneme binding model
@@ -113,5 +127,21 @@ class PostAdapter(
             toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 200)
             toast.show()
         }
+    }
+
+    private fun promptPostDelete(postId: Int) {
+        val alertDialog = AlertDialog.Builder(fragment.context)
+        alertDialog.setTitle(fragment.context?.getString(R.string.delete_post_dialog_title))
+        .setMessage(fragment.context?.getString(R.string.delete_post_dialog))
+        .setPositiveButton(fragment.context?.getString(R.string.yes)) { _, _ ->
+            // Vymaz post
+            (fragment as WallFragment).deletePost(postId)
+        }
+        .setNegativeButton("No") { _, _ -> }
+
+        val alert = alertDialog.create()
+
+        alert.setCanceledOnTouchOutside(true)
+        alert.show()
     }
 }

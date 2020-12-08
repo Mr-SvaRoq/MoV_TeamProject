@@ -2,6 +2,7 @@ package com.example.practice_demo.wall.data
 
 import com.example.practice_demo.wall.data.model.PostItem
 import com.example.practice_demo.helper.Result
+import com.example.practice_demo.profile.data.model.ChangePhotoResponse
 import com.example.practice_demo.wall.data.model.PostDatabaseDao
 import retrofit2.HttpException
 
@@ -32,5 +33,8 @@ class WallRepository(
         // Nepodarilo sa dotiahnut posty, vratime cache z lokalnej databazy
         return Pair(false, localDataSource.getPosts())
     }
+
+    suspend fun deletePost(postId: Int, token: String): Result<ChangePhotoResponse> =
+        dataSource.deletePost(postId, token)
 
 }

@@ -11,6 +11,7 @@ import com.example.practice_demo.profile.data.model.ChangePhotoRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoResponse
 import com.example.practice_demo.profile.data.model.UserInfoRequest
 import com.example.practice_demo.signup.data.model.UserSignupRequest
+import com.example.practice_demo.wall.data.model.DeletePostRequest
 import com.example.practice_demo.wall.data.model.GetPostsRequest
 import com.example.practice_demo.wall.data.model.PostItem
 import com.squareup.moshi.Moshi
@@ -95,6 +96,13 @@ interface ApiService {
         @Part("data") body: NewPostRequest,
         @Part file: MultipartBody.Part
     ): NewPostResponse
+
+    @Headers(
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    @POST("service.php")
+    suspend fun deletePostService(@Body body: DeletePostRequest): ChangePhotoResponse
 }
 
 object Api {
