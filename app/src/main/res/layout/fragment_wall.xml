@@ -28,6 +28,7 @@
             android:contentDescription="@string/add_new_post"
             android:focusable="true"
             android:src="@drawable/plus"
+            android:backgroundTint="@color/btnBackgroundPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
