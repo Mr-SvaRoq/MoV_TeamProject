@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.practice_demo.R
 import com.example.practice_demo.helper.Result
 import com.example.practice_demo.login.data.model.UserLoginResponse
+import com.example.practice_demo.login.ui.login.LoginResult
 import com.example.practice_demo.profile.data.ProfileRepository
 import kotlinx.coroutines.launch
 
@@ -18,9 +20,8 @@ class ProfileViewModel (
      * true - bola pridana,
      * false - bola odstranena
      */
-    private val _profilePhotoChangedFlag: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    val profilePhotoChangedFlag: LiveData<Boolean> = _profilePhotoChangedFlag
-
+    private val _profilePhotoChangedFlag: MutableLiveData<UserLoginResponse> = MutableLiveData()
+    val profilePhotoChangedFlag: LiveData<UserLoginResponse> = _profilePhotoChangedFlag
 
     fun changePhoto(filePath: String) {
         viewModelScope.launch {
@@ -30,7 +31,17 @@ class ProfileViewModel (
 
             if (success) {
                 // Upozornime observer, ze doslo k zmene
-                _profilePhotoChangedFlag.value = success
+                userInfo()
+            }
+        }
+    }
+
+    fun userInfo() {
+        viewModelScope.launch {
+            val result = profileRepository.userInfo(userInstance.token)
+
+            if (result is Result.Success) {
+                _profilePhotoChangedFlag.value = result.data
             }
         }
     }

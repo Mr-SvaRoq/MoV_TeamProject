@@ -56,29 +56,35 @@ class ProfileFragment : Fragment() {
         profileViewModel = ViewModelProvider(this, ProfileViewModelFactory(user))
             .get(ProfileViewModel::class.java)
 
-        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer { hasPhoto ->
+        profileViewModel.profilePhotoChangedFlag.observe(viewLifecycleOwner, Observer { changedUser ->
             // update UI po zmene fotky)
             // hasPhoto urcuje ci po zmene user ma profilovku, alebo ju zmazal (netreba robit request)
-            changeImage(hasPhoto)
+           activity?.let {
+               SaveSharedPreference.setUser(requireContext(), changedUser)
+            }!!
+
+            user = changedUser
+
+            changeImage()
         })
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-            binding.profile = UserProfile(user.username, user.email)
+        binding.profile = UserProfile(user.username, user.email)
 
         // Inflate the layout for this fragment
         return binding.root
     }
 
-    private fun changeImage(hasPhoto: Boolean) {
-            context?.let {
-                Glide.with(it)
-                    .load(Constants.Api.MEDIA_URL + user.profile)
-                    .apply(RequestOptions.skipMemoryCacheOf(true))
-                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                    .placeholder(R.drawable.user)
-                    .fallback(R.drawable.user)
-                    .into(profileImg)
-            }
+    private fun changeImage() {
+        context?.let {
+            Glide.with(it)
+                .load(Constants.Api.MEDIA_URL + user.profile)
+                .apply(RequestOptions.skipMemoryCacheOf(true))
+                .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                .placeholder(R.drawable.user)
+                .fallback(R.drawable.user)
+                .into(profileImg)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,14 +97,15 @@ class ProfileFragment : Fragment() {
 
         profileImg = view.findViewById(R.id.profile_image)
         val logoutButton: Button = view.findViewById(R.id.profile_logout)
+
         if (user != null) {
-            if (user.profile !== ""){
-                context?.let {
-                    Glide.with(it).load(Constants.Api.MEDIA_URL + user.profile)
-                        .apply(RequestOptions.skipMemoryCacheOf(true))
-                        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
-                        .into(profileImg)
-                }
+            context?.let {
+                Glide.with(it).load(Constants.Api.MEDIA_URL + user.profile)
+                    .apply(RequestOptions.skipMemoryCacheOf(true))
+                    .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
+                    .placeholder(R.drawable.user)
+                    .fallback(R.drawable.user)
+                    .into(profileImg)
             }
         }
 

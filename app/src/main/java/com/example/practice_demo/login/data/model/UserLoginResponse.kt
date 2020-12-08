@@ -9,6 +9,6 @@ data class UserLoginResponse(
     val email: String,
     val token: String,
     val refresh: String,
-    val profile: String,
+    var profile: String,
 )
 

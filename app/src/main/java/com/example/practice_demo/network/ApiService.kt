@@ -9,6 +9,7 @@ import com.example.practice_demo.login.data.model.UserLoginResponse
 import com.example.practice_demo.password.data.model.ChangePasswordRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoRequest
 import com.example.practice_demo.profile.data.model.ChangePhotoResponse
+import com.example.practice_demo.profile.data.model.UserInfoRequest
 import com.example.practice_demo.signup.data.model.UserSignupRequest
 import com.example.practice_demo.wall.data.model.GetPostsRequest
 import com.example.practice_demo.wall.data.model.PostItem
@@ -63,6 +64,9 @@ interface ApiService {
     )
     @POST("service.php")
     suspend fun signupService(@Body body: UserSignupRequest): UserLoginResponse
+
+    @POST("service.php")
+    suspend fun infoService(@Body body: UserInfoRequest): UserLoginResponse
 
     @Headers(
         "Accept: application/json",
