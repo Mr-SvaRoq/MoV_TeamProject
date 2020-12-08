@@ -95,7 +95,7 @@ class LoginFragment : Fragment() {
         usernameEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (actionId == EditorInfo.IME_ACTION_DONE && loginButton.isEnabled) {
                 loginViewModel.login(
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
