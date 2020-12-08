@@ -1,6 +1,6 @@
 # Mobilné výpočty FEI 2020/2021 Zimný semseter - TEAM 6
 
-[Alt text](relative/path/to/img.jpg?raw=true "Title")
+![Alt text](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png "App")
 
 Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s možnosťou pridania video príspevkov.
 
