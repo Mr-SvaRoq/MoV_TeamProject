@@ -7,7 +7,7 @@ Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s 
 
 ## Developerský tím
 - Bc. Hlatký, Radoslav
-- Bc.Klement, Matúš
+- Bc. Klement, Matúš
 - Bc. Nguyen Tien, Dinh
 - Bc. Tran Minh, Hung 
 
