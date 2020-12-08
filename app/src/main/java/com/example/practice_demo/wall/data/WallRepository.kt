@@ -34,7 +34,10 @@ class WallRepository(
         return Pair(false, localDataSource.getPosts())
     }
 
-    suspend fun deletePost(postId: Int, token: String): Result<ChangePhotoResponse> =
-        dataSource.deletePost(postId, token)
+    suspend fun deletePost(postId: Int, token: String): Result<ChangePhotoResponse> {
+        localDataSource.clearPosts()
+        return dataSource.deletePost(postId, token)
+    }
+
 
 }

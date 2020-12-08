@@ -52,12 +52,15 @@ class WallFragment : Fragment() {
             }
         })
 
-        wallViewModel.postDeletedFlag.observe(viewLifecycleOwner, {isDeleted ->
-            if (isDeleted) {
-                wallViewModel.feedWall()
-                Toast.makeText(context, getString(R.string.post_delete_toast), Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(context, getString(R.string.post_delete_fail_toast), Toast.LENGTH_LONG).show()
+        wallViewModel.postDeletedFlag.observe(viewLifecycleOwner, {isDeleted: Boolean? ->
+
+            if (isDeleted != null) {
+                if (isDeleted) {
+                    wallViewModel.feedWall()
+                    Toast.makeText(context, getString(R.string.post_delete_toast), Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(context, getString(R.string.post_delete_fail_toast), Toast.LENGTH_LONG).show()
+                }
             }
         })
 

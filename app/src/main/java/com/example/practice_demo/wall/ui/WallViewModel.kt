@@ -31,6 +31,9 @@ class WallViewModel(
             try {
                 val result = wallRepository.deletePost(postId, userInstance.token)
                 _postDeletedFlag.value = result is Result.Success
+                // Setneme null aby sa hodnota nedostala do observera
+                // pri backstackovom vrateni do fragmentu
+                _postDeletedFlag.value = null
             } catch (e: HttpException) {
                 // Odchytavame http exception az tu a setujeme flag ze
                 // bol poslany neautorizovany request
