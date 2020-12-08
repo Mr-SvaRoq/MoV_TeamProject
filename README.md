@@ -6,15 +6,15 @@ Vytvorenie jednoduchej [socialnej siete](http://android.mpage.sk/zadanie.php) s 
 ![Alt text](app/src/main/res/mipmap-xxxhdpi/ic_launcher.png "8mbFHD")
 
 ## Developerský tím
-- Hlatký, Radoslav
-- Klement, Matúš
-- Nguyen Tien, Dinh
-- Tran Minh, Hung 
+- Bc. Hlatký, Radoslav
+- Bc.Klement, Matúš
+- Bc. Nguyen Tien, Dinh
+- Bc. Tran Minh, Hung 
 
 ## Potrebné linky
 - [Trello](https://trello.com/b/ixg5c3I8/mov) -> pre developerov
 - [Mobilné výpočty](http://android.mpage.sk/) -> stránka predmetu 
-
+K
 ## Funkcionalita
 - Prihlásenie (Log in)
 - Založenie účtu (Sign me)
